@@ -1,7 +1,7 @@
 import 'package:dd_study_22_ui/data/clients/auth_client.dart';
 import 'package:dio/dio.dart';
 
-String baseUrl = "localhost:5001/";
+String baseUrl = "10.0.2.2:5050/";
 
 class ApiModule {
   static AuthClient? _authClient;
