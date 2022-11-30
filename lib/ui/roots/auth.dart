@@ -1,4 +1,4 @@
-import 'package:dd_study_22_ui/data/auth_service.dart';
+import 'package:dd_study_22_ui/data/services/auth_service.dart';
 import 'package:dd_study_22_ui/ui/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,22 +7,26 @@ class _ViewModelState {
   final String? login;
   final String? password;
   final bool isLoading;
+  final String? errorText;
 
   const _ViewModelState({
     this.login,
     this.password,
     this.isLoading = false,
+    this.errorText,
   });
 
   _ViewModelState copyWith({
     String? login,
     String? password,
     bool? isLoading = false,
+    String? errorText,
   }) {
     return _ViewModelState(
       login: login ?? this.login,
       password: password ?? this.password,
       isLoading: isLoading ?? this.isLoading,
+      errorText: errorText ?? this.errorText,
     );
   }
 }
@@ -43,7 +47,7 @@ class _ViewModel extends ChangeNotifier {
     });
   }
 
-  _ViewModelState _state = const _ViewModelState(); // dangerous zone
+  _ViewModelState _state = _ViewModelState();
 
   set state(_ViewModelState value) {
     _state = value;
@@ -56,14 +60,19 @@ class _ViewModel extends ChangeNotifier {
     return (state.login?.isNotEmpty ?? false) && (state.password?.isNotEmpty ?? false);
   }
 
-  login() async {
+  void login() async {
     state.copyWith(isLoading: true);
-    await Future.delayed(Duration(seconds: 3))
+    await Future.delayed(const Duration(seconds: 3))
         .then((value) => state.copyWith(isLoading: false));
-
-    await _authService
-        .auth(state.login, state.password)
-        .then((value) => AppNavigator.toLoader());
+    try {
+      await _authService
+          .auth(state.login, state.password)
+          .then((value) => AppNavigator.toLoader());
+    } on NoNetworkException {
+      state.copyWith(errorText: "No connection to server");
+    } on WrongCredentialsException {
+      state.copyWith(errorText: "Incorrect username or password");
+    }
   }
 }
 
@@ -79,23 +88,22 @@ class Auth extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Center(
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextField(
-                      controller: viewModel.loginTec,
-                      decoration: const InputDecoration(hintText: 'Enter login')),
-                  TextField(
-                      controller: viewModel.passwTec,
-                      obscureText: true,
-                      decoration: const InputDecoration(hintText: 'Enter password')),
-                  ElevatedButton(
-                      onPressed: viewModel.checkFields() ? viewModel.login : null,
-                      child: const Text("Login")),
-                  if (viewModel.state.isLoading) const CircularProgressIndicator(),
-                ],
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextField(
+                    controller: viewModel.loginTec,
+                    decoration: const InputDecoration(hintText: 'Enter login')),
+                TextField(
+                    controller: viewModel.passwTec,
+                    obscureText: true,
+                    decoration: const InputDecoration(hintText: 'Enter password')),
+                ElevatedButton(
+                    onPressed: viewModel.checkFields() ? viewModel.login : null,
+                    child: const Text("Login")),
+                if (viewModel.state.isLoading) const CircularProgressIndicator(),
+                if (viewModel.state.errorText != null) Text(viewModel.state.errorText!),
+              ],
             ),
           ),
         ),
