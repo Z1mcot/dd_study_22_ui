@@ -1,45 +1,46 @@
+import 'package:dd_study_22_ui/ui/roots/app.dart';
 import 'package:dd_study_22_ui/ui/roots/auth.dart';
-import 'package:dd_study_22_ui/ui/roots/home.dart';
 import 'package:dd_study_22_ui/ui/roots/loader.dart';
 import 'package:flutter/cupertino.dart';
 
 class NavigationRoute {
-  static const loaderWidget = '/';
-  static const authWidget = '/auth';
-  static const homeWidget = '/home';
+  static const loader = '/';
+  static const auth = '/auth';
+  static const app = '/app';
 }
 
 class AppNavigator {
   static final key = GlobalKey<NavigatorState>();
 
-  static void toLoader() {
-    key.currentState
-        ?.pushNamedAndRemoveUntil(NavigationRoute.loaderWidget, (route) => false);
+  static Future toLoader() async {
+    return key.currentState
+        ?.pushNamedAndRemoveUntil(NavigationRoute.loader, (route) => false);
   }
 
-  static void toAuth() {
-    key.currentState
-        ?.pushNamedAndRemoveUntil(NavigationRoute.authWidget, (route) => false);
+  static Future toAuth() async {
+    return key.currentState
+        ?.pushNamedAndRemoveUntil(NavigationRoute.auth, (route) => false);
   }
 
-  static void toHome() {
-    key.currentState
-        ?.pushNamedAndRemoveUntil(NavigationRoute.homeWidget, (route) => false);
+  static Future toHome() async {
+    return key.currentState
+        ?.pushNamedAndRemoveUntil(NavigationRoute.app, (route) => false);
   }
 
-  static Route<dynamic>? onGenerateRoute(RouteSettings settings, BuildContext context) {
+  static Route<dynamic>? onGenerateRoute(
+      RouteSettings settings, BuildContext context) {
     switch (settings.name) {
-      case NavigationRoute.loaderWidget:
+      case NavigationRoute.loader:
         return PageRouteBuilder(
           pageBuilder: ((_, __, ___) => LoaderWidget.create()),
         );
-      case NavigationRoute.authWidget:
+      case NavigationRoute.auth:
         return PageRouteBuilder(
           pageBuilder: ((_, __, ___) => Auth.create()),
         );
-      case NavigationRoute.homeWidget:
+      case NavigationRoute.app:
         return PageRouteBuilder(
-          pageBuilder: ((_, __, ___) => const Home(title: 'Eblogram')),
+          pageBuilder: ((_, __, ___) => App.create()),
         );
     }
 

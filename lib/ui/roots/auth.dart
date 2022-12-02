@@ -47,31 +47,34 @@ class _ViewModel extends ChangeNotifier {
     });
   }
 
-  _ViewModelState _state = _ViewModelState();
+  _ViewModelState _state = const _ViewModelState();
 
+  _ViewModelState get state => _state;
   set state(_ViewModelState value) {
     _state = value;
     notifyListeners();
   }
 
-  _ViewModelState get state => _state;
-
   bool checkFields() {
-    return (state.login?.isNotEmpty ?? false) && (state.password?.isNotEmpty ?? false);
+    return (state.login?.isNotEmpty ?? false) &&
+        (state.password?.isNotEmpty ?? false);
   }
 
   void login() async {
     state.copyWith(isLoading: true);
-    await Future.delayed(const Duration(seconds: 3))
-        .then((value) => state.copyWith(isLoading: false));
+
     try {
-      await _authService
-          .auth(state.login, state.password)
-          .then((value) => AppNavigator.toLoader());
+      await _authService.auth(state.login, state.password).then((value) {
+        AppNavigator.toLoader()
+            .then(((value) => {state = state.copyWith(isLoading: false)}));
+      });
     } on NoNetworkException {
-      state.copyWith(errorText: "No connection to server");
+      state = state.copyWith(errorText: "No connection to server");
     } on WrongCredentialsException {
-      state.copyWith(errorText: "Incorrect username or password");
+      state = state.copyWith(errorText: "Incorrect username or password");
+    } on ServerSideException {
+      state = state.copyWith(
+          errorText: "Problems on the side of server. Try again later...");
     }
   }
 }
@@ -97,12 +100,15 @@ class Auth extends StatelessWidget {
                 TextField(
                     controller: viewModel.passwTec,
                     obscureText: true,
-                    decoration: const InputDecoration(hintText: 'Enter password')),
+                    decoration:
+                        const InputDecoration(hintText: 'Enter password')),
                 ElevatedButton(
                     onPressed: viewModel.checkFields() ? viewModel.login : null,
                     child: const Text("Login")),
-                if (viewModel.state.isLoading) const CircularProgressIndicator(),
-                if (viewModel.state.errorText != null) Text(viewModel.state.errorText!),
+                if (viewModel.state.isLoading)
+                  const CircularProgressIndicator(),
+                if (viewModel.state.errorText != null)
+                  Text(viewModel.state.errorText!),
               ],
             ),
           ),

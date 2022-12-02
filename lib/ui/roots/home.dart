@@ -1,5 +1,3 @@
-import 'package:dd_study_22_ui/data/services/auth_service.dart';
-import 'package:dd_study_22_ui/ui/app_navigator.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -12,13 +10,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final _authService = AuthService();
-
   int _counter = 0;
 
   bool _showFab = true;
   bool _showNotch = true;
-  FloatingActionButtonLocation _fabLocation = FloatingActionButtonLocation.centerFloat;
+  FloatingActionButtonLocation _fabLocation =
+      FloatingActionButtonLocation.centerFloat;
 
   void _onShowNotchChanged(bool value) {
     setState(() {
@@ -44,24 +41,12 @@ class _HomeState extends State<Home> {
     });
   }
 
-  Future _logout() async {
-    await _authService.logout().then(
-          (value) => AppNavigator.toLoader(),
-        );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: _fabLocation,
       appBar: AppBar(
         title: Text('${widget.title} - $_counter'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: _logout,
-          ),
-        ],
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
