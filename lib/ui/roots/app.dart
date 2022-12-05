@@ -3,7 +3,6 @@ import 'package:dd_study_22_ui/domain/models/user.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
-import 'package:dd_study_22_ui/ui/app_navigator.dart';
 import 'package:dd_study_22_ui/ui/roots/app_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,10 +30,6 @@ class _ViewModel extends ChangeNotifier {
     var token = await TokenStorage.getAccessToken();
     headers = {"Authorization": "Bearer $token"};
     user = await SharedPrefs.getStoredUser();
-  }
-
-  void logout() async {
-    await _authService.logout().then((value) => AppNavigator.toLoader());
   }
 
   void refresh() async {
@@ -65,15 +60,12 @@ class App extends StatelessWidget {
             icon: const Icon(Icons.refresh_rounded),
             onPressed: viewModel.refresh,
           ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: viewModel.logout,
-          ),
         ],
       ),
       body: Column(
         children: [],
       ),
+      // Переход между главной страницей и профилем через этот navbar
       bottomNavigationBar: const AppBottomNavigationBar(
         selectedIcon: NavigationIconSelection.home,
       ),

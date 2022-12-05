@@ -3,13 +3,14 @@ import 'package:dd_study_22_ui/domain/models/user.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
+import 'package:dd_study_22_ui/ui/app_navigator.dart';
 import 'package:dd_study_22_ui/ui/roots/app_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class _ViewModel extends ChangeNotifier {
   BuildContext context;
-  // final _authService = AuthService();
+  final _authService = AuthService();
 
   _ViewModel({required this.context}) {
     _asyncInit();
@@ -31,6 +32,10 @@ class _ViewModel extends ChangeNotifier {
     headers = {"Authorization": "Bearer $token"};
     user = await SharedPrefs.getStoredUser();
   }
+
+  void logout() async {
+    await _authService.logout().then((value) => AppNavigator.toLoader());
+  }
 }
 
 class UserProfile extends StatelessWidget {
@@ -49,6 +54,12 @@ class UserProfile extends StatelessWidget {
             user.nameTag,
             style: const TextStyle(fontSize: 24),
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: viewModel.logout,
+            ),
+          ],
         ),
         body: SafeArea(
           child: Padding(
