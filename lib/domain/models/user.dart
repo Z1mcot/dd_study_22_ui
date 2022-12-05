@@ -8,18 +8,22 @@ class User {
   final String nameTag;
   final String name;
   final String? avatarLink;
-  // final int subscriptionsCount;
-  // final int subscribersCount;
-  // final int postsCount;
+  final String email;
+  final String birthDate;
+  final int subscriptionsCount;
+  final int subscribersCount;
+  final int postsCount;
 
   User({
     required this.id,
     required this.nameTag,
     required this.name,
     this.avatarLink,
-    // required this.subscriptionsCount,
-    // required this.subscribersCount,
-    // required this.postsCount,
+    required this.email,
+    required this.birthDate,
+    required this.subscriptionsCount,
+    required this.subscribersCount,
+    required this.postsCount,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

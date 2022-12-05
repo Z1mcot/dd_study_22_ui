@@ -26,16 +26,16 @@ class ApiModule {
       );
 
   static Dio _addIntercepters(Dio dio) {
-    dio.interceptors.add(QueuedInterceptorsWrapper(
+    dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         final token = await TokenStorage.getAccessToken();
         options.headers.addAll({"Autorization": "Bearer $token"});
         return handler.next(options);
       },
       onError: (e, handler) async {
-        if (e.response?.statusCode == 401) {
+        if (e.response?.statusCode == 401 || e.response?.statusCode == 403) {
           // ignore: deprecated_member_use
-          // dio.lock();
+          dio.lock();
           RequestOptions options = e.response!.requestOptions;
 
           var rt = await TokenStorage.getRefreshToken();
@@ -50,14 +50,14 @@ class ApiModule {
             var service = AuthService();
             if (await service.checkAuth()) {
               await service.logout();
-              await AppNavigator.toLoader();
+              AppNavigator.toLoader();
             }
 
             return handler
                 .resolve(Response(statusCode: 400, requestOptions: options));
           } finally {
             // ignore: deprecated_member_use
-            // dio.unlock();
+            dio.unlock();
           }
 
           return handler.resolve(await dio.fetch(options));

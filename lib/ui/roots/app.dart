@@ -4,6 +4,7 @@ import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
 import 'package:dd_study_22_ui/ui/app_navigator.dart';
+import 'package:dd_study_22_ui/ui/roots/app_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -70,10 +71,11 @@ class App extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        child: Column(
-          children: [],
-        ),
+      body: Column(
+        children: [],
+      ),
+      bottomNavigationBar: const AppBottomNavigationBar(
+        selectedIcon: NavigationIconSelection.home,
       ),
     );
   }
