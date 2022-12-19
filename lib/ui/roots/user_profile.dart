@@ -82,21 +82,24 @@ class UserProfile extends StatelessWidget {
                     Column(
                       children: [
                         Text("${user.postsCount}",
-                            style: const TextStyle(fontSize: 16)),
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
                         const Text("Posts")
                       ],
                     ),
                     Column(
                       children: [
                         Text("${user.subscribersCount}",
-                            style: const TextStyle(fontSize: 16)),
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
                         const Text("Followers")
                       ],
                     ),
                     Column(
                       children: [
                         Text("${user.subscriptionsCount}",
-                            style: const TextStyle(fontSize: 16)),
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
                         const Text("Following")
                       ],
                     )

@@ -31,10 +31,6 @@ class _ViewModel extends ChangeNotifier {
     headers = {"Authorization": "Bearer $token"};
     user = await SharedPrefs.getStoredUser();
   }
-
-  void refresh() async {
-    await _authService.tryGetUser();
-  }
 }
 
 class App extends StatelessWidget {
@@ -58,7 +54,7 @@ class App extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh_rounded),
-            onPressed: viewModel.refresh,
+            onPressed: () {},
           ),
         ],
       ),
