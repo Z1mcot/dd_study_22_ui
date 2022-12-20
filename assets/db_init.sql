@@ -2,13 +2,18 @@ CREATE TABLE t_User (
   id                      TEXT NOT NULL PRIMARY KEY
   ,[name]                 TEXT
   ,email                  TEXT
+  ,nameTag                TEXT
   ,birthDate              TEXT NOT NULL
   ,avatarLink             TEXT
+  ,subscriptionsCount     INTEGER
+  ,subscribersCount       INTEGER
+  ,postsCount             INTEGER
 );
 CREATE TABLE t_Post (
   id                      TEXT NOT NULL PRIMARY KEY
   ,[description]          TEXT
   ,authorId               TEXT NOT NULL
+  ,publishDate            TEXT
   ,FOREIGN KEY(authorId) REFERENCES t_User(id)
 );
 CREATE TABLE t_PostContent (
@@ -16,5 +21,6 @@ CREATE TABLE t_PostContent (
   ,[name]                 TEXT
   ,mimeType               TEXT
   ,postId                 TEXT
+  ,contentLink            TEXT
   ,FOREIGN KEY(postId) REFERENCES t_Post(id)
 );

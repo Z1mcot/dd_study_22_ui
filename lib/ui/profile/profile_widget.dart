@@ -1,49 +1,15 @@
-import 'package:dd_study_22_ui/data/services/auth_service.dart';
-import 'package:dd_study_22_ui/domain/models/user.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
-import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
-import 'package:dd_study_22_ui/internal/config/token_storage.dart';
-import 'package:dd_study_22_ui/ui/app_navigator.dart';
+import 'package:dd_study_22_ui/ui/profile/profile_view_model.dart';
 import 'package:dd_study_22_ui/ui/roots/app_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class _ViewModel extends ChangeNotifier {
-  BuildContext context;
-  final _authService = AuthService();
-
-  _ViewModel({required this.context}) {
-    _asyncInit();
-  }
-
-  User? _user;
-
-  User? get user => _user;
-
-  set user(User? value) {
-    _user = value;
-    notifyListeners();
-  }
-
-  Map<String, String>? headers;
-
-  void _asyncInit() async {
-    var token = await TokenStorage.getAccessToken();
-    headers = {"Authorization": "Bearer $token"};
-    user = await SharedPrefs.getStoredUser();
-  }
-
-  void logout() async {
-    await _authService.logout().then((value) => AppNavigator.toLoader());
-  }
-}
-
-class UserProfile extends StatelessWidget {
-  const UserProfile({super.key});
+class ProfileWidget extends StatelessWidget {
+  const ProfileWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var viewModel = context.watch<_ViewModel>();
+    var viewModel = context.watch<ProfileViewModel>();
     var user = viewModel.user;
 
     if (user != null) {
@@ -127,8 +93,8 @@ class UserProfile extends StatelessWidget {
 
   static create() {
     return ChangeNotifierProvider(
-      create: (BuildContext context) => _ViewModel(context: context),
-      child: const UserProfile(),
+      create: (BuildContext context) => ProfileViewModel(context: context),
+      child: const ProfileWidget(),
     );
   }
 }

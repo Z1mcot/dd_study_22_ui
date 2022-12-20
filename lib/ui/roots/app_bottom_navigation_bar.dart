@@ -5,9 +5,12 @@ enum NavigationIconSelection { home, profile }
 
 class AppBottomNavigationBar extends StatelessWidget {
   final NavigationIconSelection selectedIcon;
+  final Function? onSelectedIconClick;
+
   const AppBottomNavigationBar({
     super.key,
     required this.selectedIcon,
+    this.onSelectedIconClick,
   });
 
   @override
@@ -20,6 +23,8 @@ class AppBottomNavigationBar extends StatelessWidget {
             onPressed: () {
               if (selectedIcon != NavigationIconSelection.home) {
                 AppNavigator.toHome();
+              } else {
+                onSelectedIconClick?.call();
               }
             },
             icon: selectedIcon == NavigationIconSelection.home

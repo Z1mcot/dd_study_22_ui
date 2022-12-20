@@ -1,5 +1,6 @@
-import 'package:dd_study_22_ui/domain/db_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'package:dd_study_22_ui/domain/db_model.dart';
 
 part 'user.g.dart';
 
@@ -36,5 +37,34 @@ class User implements DbModel {
   @override
   Map<String, dynamic> toMap() {
     return _$UserToJson(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is User &&
+        other.id == id &&
+        other.nameTag == nameTag &&
+        other.name == name &&
+        other.avatarLink == avatarLink &&
+        other.email == email &&
+        other.birthDate == birthDate &&
+        other.subscriptionsCount == subscriptionsCount &&
+        other.subscribersCount == subscribersCount &&
+        other.postsCount == postsCount;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        nameTag.hashCode ^
+        name.hashCode ^
+        avatarLink.hashCode ^
+        email.hashCode ^
+        birthDate.hashCode ^
+        subscriptionsCount.hashCode ^
+        subscribersCount.hashCode ^
+        postsCount.hashCode;
   }
 }

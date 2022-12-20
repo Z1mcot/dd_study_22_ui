@@ -1,7 +1,7 @@
 import 'package:dd_study_22_ui/ui/roots/app.dart';
 import 'package:dd_study_22_ui/ui/roots/auth.dart';
 import 'package:dd_study_22_ui/ui/roots/loader.dart';
-import 'package:dd_study_22_ui/ui/roots/user_profile.dart';
+import 'package:dd_study_22_ui/ui/profile/profile_widget.dart';
 import 'package:flutter/cupertino.dart';
 
 class NavigationRoute {
@@ -50,7 +50,7 @@ class AppNavigator {
         );
       case NavigationRoute.profile:
         return PageRouteBuilder(
-          pageBuilder: (_, __, ___) => UserProfile.create(),
+          pageBuilder: (_, __, ___) => ProfileWidget.create(),
         );
     }
 

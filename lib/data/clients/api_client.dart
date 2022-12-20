@@ -1,3 +1,4 @@
+import 'package:dd_study_22_ui/domain/models/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/user.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
@@ -10,4 +11,8 @@ abstract class ApiClient {
 
   @GET("/api/User/GetCurrentUser")
   Future<User?> getUser();
+
+  @GET("/api/Post/GetPosts")
+  Future<List<PostModel>> getPosts(
+      @Query("skip") int skip, @Query("take") int take);
 }

@@ -10,22 +10,22 @@ class PostModel {
   final String? description;
   final User author;
   final List<PostContent> content;
-  final int likes;
-  final int comments;
+  final int? likes;
+  final int? comments;
   final String publishDate;
-  final bool isModified;
-  final bool isLiked;
+  final bool? isModified;
+  final bool? isLiked;
 
   PostModel({
     required this.id,
     this.description,
     required this.author,
     required this.content,
-    required this.likes,
-    required this.comments,
+    this.likes,
+    this.comments,
     required this.publishDate,
-    required this.isModified,
-    required this.isLiked,
+    this.isModified,
+    this.isLiked,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) =>

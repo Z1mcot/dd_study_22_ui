@@ -1,5 +1,10 @@
 # dd_study_22_ui
 
+## Важно 
+Для корректной работы необходимо сбилдить все автогенерируемые *.g.dart файлы с помощью команды:
+
+fvm flutter packages pub run build_runner build --delete-conflicting-outputs
+
 ## Референс:
 - https://github.com/avenum/dd_study_22_ui/blob/master/.fvm/flutter_sdk
 

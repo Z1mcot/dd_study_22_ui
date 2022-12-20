@@ -16,7 +16,7 @@ class DB {
   Future init() async {
     if (!_isInitialized) {
       var databasePath = await getDatabasesPath();
-      var path = join(databasePath, "db_v1.0.0.db");
+      var path = join(databasePath, "db_v1.0.3.db");
 
       _db = await openDatabase(path, version: 1, onCreate: _createDB);
       _isInitialized = true;
