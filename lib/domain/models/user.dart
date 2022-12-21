@@ -12,7 +12,7 @@ class User implements DbModel {
   final String name;
   final String? avatarLink;
   final String email;
-  final String birthDate;
+  final DateTime birthDate;
   final int subscriptionsCount;
   final int subscribersCount;
   final int postsCount;

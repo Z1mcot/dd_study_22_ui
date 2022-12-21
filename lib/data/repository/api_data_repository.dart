@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:dd_study_22_ui/data/clients/api_client.dart';
 import 'package:dd_study_22_ui/data/clients/auth_client.dart';
+import 'package:dd_study_22_ui/domain/models/attach_meta.dart';
+import 'package:dd_study_22_ui/domain/models/create_post_model.dart';
 import 'package:dd_study_22_ui/domain/models/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/refresh_token_request.dart';
 import 'package:dd_study_22_ui/domain/models/token_request.dart';
 import 'package:dd_study_22_ui/domain/models/token_response.dart';
 import 'package:dd_study_22_ui/domain/models/user.dart';
+import 'package:dd_study_22_ui/domain/models/user/register_user_model.dart';
 import 'package:dd_study_22_ui/domain/repository/api_repository.dart';
 
 class ApiDataRepository extends ApiRepository {
@@ -24,6 +29,9 @@ class ApiDataRepository extends ApiRepository {
   }
 
   @override
+  Future registerUser(RegisterUserModel model) => _auth.registerUser(model);
+
+  @override
   Future<User?> getUser() => _api.getUser();
 
   @override
@@ -33,6 +41,16 @@ class ApiDataRepository extends ApiRepository {
       ));
 
   @override
-  Future<List<PostModel>> getPosts(int skip, int take) async =>
-      await _api.getPosts(skip, take);
+  Future<List<PostModel>> getPosts(int skip, int take) =>
+      _api.getPosts(skip, take);
+
+  @override
+  Future<List<AttachMeta>> uploadFiles({required List<File> files}) =>
+      _api.uploadFiles(files: files);
+
+  @override
+  Future addAvatarToUser(AttachMeta model) => _api.addAvatarToUser(model);
+
+  @override
+  Future createPost(CreatePostModel model) => _api.createPost(model);
 }

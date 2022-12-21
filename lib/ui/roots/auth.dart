@@ -1,5 +1,6 @@
 import 'package:dd_study_22_ui/data/services/auth_service.dart';
 import 'package:dd_study_22_ui/ui/app_navigator.dart';
+import 'package:dd_study_22_ui/ui/registration/register_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -77,6 +78,16 @@ class _ViewModel extends ChangeNotifier {
           errorText: "Problems on the side of server. Try again later...");
     }
   }
+
+  void register() async {
+    state.copyWith(isLoading: true);
+
+    Navigator.of(context)
+        .push(MaterialPageRoute(
+          builder: (newContext) => RegistrationWidget.create(newContext),
+        ))
+        .then((value) => {state.copyWith(isLoading: false)});
+  }
 }
 
 class Auth extends StatelessWidget {
@@ -105,6 +116,10 @@ class Auth extends StatelessWidget {
                 ElevatedButton(
                     onPressed: viewModel.checkFields() ? viewModel.login : null,
                     child: const Text("Login")),
+                const Divider(),
+                ElevatedButton(
+                    onPressed: viewModel.register,
+                    child: const Text("Sign Up")),
                 if (viewModel.state.isLoading)
                   const CircularProgressIndicator(),
                 if (viewModel.state.errorText != null)

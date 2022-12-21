@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-
 import 'package:dd_study_22_ui/domain/db_model.dart';
 
 part 'post_content.g.dart';

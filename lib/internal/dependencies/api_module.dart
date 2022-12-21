@@ -1,11 +1,12 @@
-import 'package:dd_study_22_ui/data/clients/api_client.dart';
-import 'package:dd_study_22_ui/data/clients/auth_client.dart';
 import 'package:dd_study_22_ui/data/services/auth_service.dart';
 import 'package:dd_study_22_ui/domain/models/refresh_token_request.dart';
-import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
 import 'package:dd_study_22_ui/ui/app_navigator.dart';
 import 'package:dio/dio.dart';
+
+import '../../data/clients/api_client.dart';
+import '../../data/clients/auth_client.dart';
+import '../config/app_config.dart';
 
 class ApiModule {
   static AuthClient? _authClient;
@@ -17,7 +18,6 @@ class ApiModule {
         Dio(),
         baseUrl: baseUrl,
       );
-
   static ApiClient api() =>
       _apiClient ??
       ApiClient(
@@ -29,11 +29,11 @@ class ApiModule {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         final token = await TokenStorage.getAccessToken();
-        options.headers.addAll({"Autorization": "Bearer $token"});
+        options.headers.addAll({"Authorization": "Bearer $token"});
         return handler.next(options);
       },
       onError: (e, handler) async {
-        if (e.response?.statusCode == 401 || e.response?.statusCode == 403) {
+        if (e.response?.statusCode == 401) {
           // ignore: deprecated_member_use
           dio.lock();
           RequestOptions options = e.response!.requestOptions;
@@ -48,10 +48,10 @@ class ApiModule {
             }
           } catch (e) {
             var service = AuthService();
-            // if (await service.checkAuth()) {
+            //if (await service.checkAuth()) {
             await service.logout();
             AppNavigator.toLoader();
-            // }
+            //}
 
             return handler
                 .resolve(Response(statusCode: 400, requestOptions: options));

@@ -5,6 +5,8 @@ import 'package:dd_study_22_ui/domain/models/user.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
+import 'package:dd_study_22_ui/ui/common/camera_widget.dart';
+import 'package:dd_study_22_ui/ui/posts/add_post_widget.dart';
 import 'package:dd_study_22_ui/ui/roots/app_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -72,6 +74,7 @@ class AppViewModel extends ChangeNotifier {
 
     await SyncService().syncPosts();
     posts = await _dataService.getPosts();
+    imagePaths = <String>[];
   }
 
   void onClick() {
@@ -79,6 +82,46 @@ class AppViewModel extends ChangeNotifier {
       0,
       duration: const Duration(seconds: 1),
       curve: Curves.easeInCubic,
+    );
+  }
+
+  List<String>? _imagePaths;
+  List<String>? get imagePaths => _imagePaths;
+  set imagePaths(List<String>? value) {
+    _imagePaths = value;
+    notifyListeners();
+  }
+
+  void createPost() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (newContext) => Scaffold(
+          backgroundColor: Colors.black38,
+          appBar: AppBar(backgroundColor: Colors.black38),
+          body: SafeArea(
+            child: CameraWidget(
+              onFile: (file) {
+                imagePaths!.add(file.path);
+              },
+            ),
+          ),
+          bottomNavigationBar: BottomAppBar(
+            color: Colors.black,
+            child: IconButton(
+              onPressed: () async => imagePaths!.isNotEmpty
+                  ? await Navigator.of(newContext).push(MaterialPageRoute(
+                      builder: (newContext) =>
+                          AddPostWidget.create(imagePaths!),
+                    ))
+                  : null,
+              icon: const Icon(
+                Icons.navigate_next,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -104,8 +147,8 @@ class App extends StatelessWidget {
         title: Text(viewModel.user == null ? "Hi" : viewModel.user!.name),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh_rounded),
-            onPressed: () {},
+            icon: const Icon(Icons.post_add),
+            onPressed: viewModel.createPost,
           ),
         ],
       ),
