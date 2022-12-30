@@ -1,4 +1,3 @@
-import 'package:dd_study_22_ui/domain/models/post.dart';
 import 'package:dd_study_22_ui/domain/models/refresh_token_request.dart';
 import 'package:dd_study_22_ui/domain/models/token_request.dart';
 import 'package:dd_study_22_ui/domain/models/token_response.dart';

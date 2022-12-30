@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'package:dd_study_22_ui/data/services/auth_service.dart';
 import 'package:dd_study_22_ui/domain/models/user/register_user_model.dart';
 import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
-import 'package:dd_study_22_ui/ui/app_navigator.dart';
 
 class _ViewModelState {
   RegisterUserModel model;
@@ -60,8 +58,10 @@ class _ViewModel extends ChangeNotifier {
       state.model = state.model.copyWith(retryPassword: retrypasswTec.text);
     });
     dateinputTec.addListener(() {
-      state.model =
-          state.model.copyWith(birthDate: DateTime.parse(dateinputTec.text));
+      state.model = state.model.copyWith(
+          birthDate: dateinputTec.text.isNotEmpty
+              ? DateTime.parse(dateinputTec.text)
+              : null);
     });
   }
 
@@ -78,7 +78,8 @@ class _ViewModel extends ChangeNotifier {
         (state.model.nameTag?.isNotEmpty ?? false) &&
         (state.model.email?.isNotEmpty ?? false) &&
         (state.model.password?.isNotEmpty ?? false) &&
-        (state.model.retryPassword?.isNotEmpty ?? false);
+        (state.model.retryPassword?.isNotEmpty ?? false) &&
+        (state.model.password == state.model.retryPassword);
   }
 
   void register() async {

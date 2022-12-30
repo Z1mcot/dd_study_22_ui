@@ -18,6 +18,8 @@ abstract class ApiRepository {
 
   Future<List<PostModel>> getPosts(int skip, int take);
 
+  Future<List<PostModel>> getUserPosts(String userId, int skip, int take);
+
   Future<List<AttachMeta>> uploadFiles({required List<File> files});
 
   Future addAvatarToUser(AttachMeta model);

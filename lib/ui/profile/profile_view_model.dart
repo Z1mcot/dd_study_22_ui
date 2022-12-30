@@ -8,12 +8,14 @@ import 'package:dd_study_22_ui/domain/models/post.dart';
 import 'package:dd_study_22_ui/domain/models/post_content.dart';
 import 'package:dd_study_22_ui/domain/models/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/user.dart';
+import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
 import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
 import 'package:dd_study_22_ui/ui/app_navigator.dart';
 import 'package:dd_study_22_ui/ui/common/camera_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   final BuildContext context;
@@ -45,15 +47,22 @@ class ProfileViewModel extends ChangeNotifier {
     var token = await TokenStorage.getAccessToken();
     headers = {"Authorization": "Bearer $token"};
     user = await SharedPrefs.getStoredUser();
+    var img = await NetworkAssetBundle(Uri.parse("$baseUrl${user!.avatarLink}"))
+        .load("$baseUrl${user!.avatarLink}?v=1");
+    avatar = Image.memory(
+      img.buffer.asUint8List(),
+      fit: BoxFit.fill,
+    );
 
-    await SyncService().syncPosts();
-    posts = await _dataService.getPosts();
+    await SyncService().syncUserPosts(user!.id);
+    posts = await _dataService.getUserPosts(user!.id);
   }
 
   String? _imagePath;
-  String? get imagePath => _imagePath;
-  set imagePath(String? value) {
-    _imagePath = value;
+  Image? _avatar;
+  Image? get avatar => _avatar;
+  set avatar(Image? value) {
+    _avatar = value;
     notifyListeners();
   }
 
@@ -76,6 +85,11 @@ class ProfileViewModel extends ChangeNotifier {
       var t = await _api.uploadFiles(files: [File(_imagePath!)]);
       if (t.isNotEmpty) {
         await _api.addAvatarToUser(t.first);
+
+        var img =
+            await NetworkAssetBundle(Uri.parse("$baseUrl${user!.avatarLink}"))
+                .load("$baseUrl${user!.avatarLink}?v=1");
+        avatar = Image.memory(img.buffer.asUint8List());
       }
     }
   }

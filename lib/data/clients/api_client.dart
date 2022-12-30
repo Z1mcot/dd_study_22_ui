@@ -30,4 +30,8 @@ abstract class ApiClient {
 
   @POST("/api/Post/CreatePost")
   Future createPost(@Body() CreatePostModel model);
+
+  @GET("/api/Post/ShowUserPosts")
+  Future<List<PostModel>> getUserPosts(@Query("authorId") String userId,
+      @Query("skip") int skip, @Query("take") int take);
 }

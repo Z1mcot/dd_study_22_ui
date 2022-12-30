@@ -14,9 +14,32 @@ class DataService {
     await DB.instance.createUpdateRange(elements);
   }
 
-  Future<List<PostModel>> getPosts() async {
+  Future<List<PostModel>> getUserPosts(String userId) async {
     var res = <PostModel>[];
-    var posts = await DB.instance.getAll<Post>();
+    var posts = await DB.instance.getAll<Post>(whereMap: {"authorId": userId});
+    for (var post in posts) {
+      var author = await DB.instance.get<User>(post.authorId);
+      var content =
+          (await DB.instance.getAll<PostContent>(whereMap: {"postId": post.id}))
+              .toList();
+      if (author != null) {
+        res.add(PostModel(
+          id: post.id,
+          author: author,
+          content: content,
+          publishDate: post.publishDate,
+          description: post.description,
+        ));
+      }
+    }
+
+    return res;
+  }
+
+  Future<List<PostModel>> getPosts(String userId) async {
+    var res = <PostModel>[];
+    var posts = await DB.instance
+        .getAll<Post>(whereMap: {"authorId": userId}, invertWhereClause: true);
     for (var post in posts) {
       var author = await DB.instance.get<User>(post.authorId);
       var content =

@@ -73,7 +73,7 @@ class AppViewModel extends ChangeNotifier {
     user = await SharedPrefs.getStoredUser();
 
     await SyncService().syncPosts();
-    posts = await _dataService.getPosts();
+    posts = await _dataService.getPosts(user!.id);
     imagePaths = <String>[];
   }
 
@@ -137,12 +137,14 @@ class App extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: (viewModel.user != null && viewModel.headers != null)
-            ? CircleAvatar(
-                backgroundImage: NetworkImage(
-                  "$baseUrl${viewModel.user!.avatarLink}",
-                  headers: viewModel.headers,
-                ),
-              )
+            ? Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    "$baseUrl${viewModel.user!.avatarLink}",
+                    headers: viewModel.headers,
+                  ),
+                ))
             : null,
         title: Text(viewModel.user == null ? "Hi" : viewModel.user!.name),
         actions: [
@@ -186,6 +188,7 @@ class App extends StatelessWidget {
                                         "$baseUrl${post.content[pageIndex].contentLink}",
                                         headers: viewModel.headers,
                                       ),
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),

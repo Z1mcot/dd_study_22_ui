@@ -8,6 +8,24 @@ class SyncService {
 
   Future syncPosts() async {
     var postModels = await _api.getPosts(0, 100);
+
+    var authors = postModels.map((e) => e.author).toSet();
+    var postContent = postModels
+        .expand((x) => x.content.map((e) => e.copyWith(postId: x.id)))
+        .toList();
+
+    var posts = postModels
+        .map((e) => Post.fromJson(e.toJson()).copyWith(authorId: e.author.id))
+        .toList();
+
+    await _dataService.rangeUpdateEntities(authors);
+    await _dataService.rangeUpdateEntities(posts);
+    await _dataService.rangeUpdateEntities(postContent);
+  }
+
+  Future syncUserPosts(String userProfileId) async {
+    var postModels = await _api.getUserPosts(userProfileId, 0, 100);
+
     var authors = postModels.map((e) => e.author).toSet();
     var postContent = postModels
         .expand((x) => x.content.map((e) => e.copyWith(postId: x.id)))

@@ -45,6 +45,10 @@ class ApiDataRepository extends ApiRepository {
       _api.getPosts(skip, take);
 
   @override
+  Future<List<PostModel>> getUserPosts(String userId, int skip, int take) =>
+      _api.getUserPosts(userId, skip, take);
+
+  @override
   Future<List<AttachMeta>> uploadFiles({required List<File> files}) =>
       _api.uploadFiles(files: files);
 

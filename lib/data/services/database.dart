@@ -48,6 +48,7 @@ class DB {
 
   Future<Iterable<T>> getAll<T extends DbModel>({
     Map<String, Object?>? whereMap,
+    bool? invertWhereClause,
     int? take,
     int? skip,
   }) async {
@@ -59,11 +60,15 @@ class DB {
 
       whereMap.forEach((key, value) {
         if (value is Iterable<dynamic>) {
-          whereBuilder
-              .add("$key IN (${List.filled(value.length, '?').join(',')})");
+          var operator =
+              invertWhereClause != null && invertWhereClause ? "NOT IN" : "IN";
+          whereBuilder.add(
+              "$key $operator (${List.filled(value.length, '?').join(',')})");
           whereArgs.addAll(value.map((e) => "$e"));
         } else {
-          whereBuilder.add("$key = ?");
+          var operator =
+              invertWhereClause != null && invertWhereClause ? "<>" : "=";
+          whereBuilder.add("$key $operator ?");
           whereArgs.add(value);
         }
       });

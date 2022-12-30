@@ -113,13 +113,27 @@ class Auth extends StatelessWidget {
                     obscureText: true,
                     decoration:
                         const InputDecoration(hintText: 'Enter password')),
-                ElevatedButton(
-                    onPressed: viewModel.checkFields() ? viewModel.login : null,
-                    child: const Text("Login")),
-                const Divider(),
-                ElevatedButton(
-                    onPressed: viewModel.register,
-                    child: const Text("Sign Up")),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              fixedSize: const Size.fromWidth(100)),
+                          onPressed:
+                              viewModel.checkFields() ? viewModel.login : null,
+                          child: const Text("Login")),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              fixedSize: const Size.fromWidth(100)),
+                          onPressed: viewModel.register,
+                          child: const Text("Sign Up")),
+                    ],
+                  ),
+                ),
                 if (viewModel.state.isLoading)
                   const CircularProgressIndicator(),
                 if (viewModel.state.errorText != null)

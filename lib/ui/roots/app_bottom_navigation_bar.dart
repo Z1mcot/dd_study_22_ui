@@ -1,4 +1,5 @@
 import 'package:dd_study_22_ui/ui/app_navigator.dart';
+import 'package:dd_study_22_ui/ui/profile/profile_widget.dart';
 import 'package:flutter/material.dart';
 
 enum NavigationIconSelection { home, profile }
@@ -12,6 +13,11 @@ class AppBottomNavigationBar extends StatelessWidget {
     required this.selectedIcon,
     this.onSelectedIconClick,
   });
+
+  static Future toProfile(BuildContext context) async {
+    return Navigator.of(context).push(
+        MaterialPageRoute(builder: (newContext) => ProfileWidget.create()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +40,7 @@ class AppBottomNavigationBar extends StatelessWidget {
           IconButton(
             onPressed: () {
               if (selectedIcon != NavigationIconSelection.profile) {
-                AppNavigator.toProfile();
+                toProfile(context);
               }
             },
             icon: selectedIcon == NavigationIconSelection.profile

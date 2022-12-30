@@ -17,11 +17,12 @@ class ProfileWidget extends StatelessWidget {
     var posts = viewModel.posts;
     var postWidgets = <Widget>[];
     if (posts != null) {
-      posts.forEach((post) {
+      for (var post in posts) {
         postWidgets.add(Image(
             image: NetworkImage("$baseUrl${post.content.first.contentLink}",
-                headers: viewModel.headers)));
-      });
+                headers: viewModel.headers),
+            fit: BoxFit.cover));
+      }
     }
 
     if (user != null) {
@@ -48,17 +49,17 @@ class ProfileWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: viewModel.changePhoto,
-                      child: CircleAvatar(
-                        backgroundImage: (viewModel.headers != null)
-                            ? NetworkImage(
-                                "$baseUrl${user.avatarLink}",
-                                headers: viewModel.headers,
-                              )
-                            : null,
-                        radius: 50,
-                      ),
-                    ),
+                        onTap: viewModel.changePhoto,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white, width: 0),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          width: 100,
+                          height: 100,
+                          child: viewModel.avatar ??
+                              const CircularProgressIndicator(),
+                        )),
                     Column(
                       children: [
                         Text("${user.postsCount}",
@@ -113,7 +114,8 @@ class ProfileWidget extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: const AppBottomNavigationBar(
-            selectedIcon: NavigationIconSelection.profile),
+          selectedIcon: NavigationIconSelection.profile,
+        ),
       );
     } else {
       return const Scaffold(
