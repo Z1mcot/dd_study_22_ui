@@ -69,7 +69,7 @@ class _AuthClient implements AuthClient {
   }
 
   @override
-  Future<dynamic> registerUser(body) async {
+  Future<dynamic> signUpUser(body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};

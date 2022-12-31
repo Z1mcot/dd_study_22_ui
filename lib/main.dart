@@ -1,6 +1,6 @@
 import 'package:dd_study_22_ui/data/services/database.dart';
-import 'package:dd_study_22_ui/ui/app_navigator.dart';
-import 'package:dd_study_22_ui/ui/roots/loader.dart';
+import 'package:dd_study_22_ui/ui/navigation/app_navigator.dart';
+import 'package:dd_study_22_ui/ui/widgets/roots/loader/loader.dart';
 import 'package:flutter/material.dart';
 
 void main() async {

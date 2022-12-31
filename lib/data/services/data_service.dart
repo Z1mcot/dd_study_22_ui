@@ -36,10 +36,38 @@ class DataService {
     return res;
   }
 
-  Future<List<PostModel>> getPosts(String userId) async {
+  Future<PostModel?> getPostById(String postId) async {
+    var post = await DB.instance.get<Post>(postId);
+    if (post != null) {
+      var author = await DB.instance.get<User>(post.authorId);
+      var content =
+          (await DB.instance.getAll<PostContent>(whereMap: {"postId": post.id}))
+              .toList();
+      if (author != null) {
+        return PostModel(
+          id: post.id,
+          author: author,
+          content: content,
+          publishDate: post.publishDate,
+          description: post.description,
+        );
+      }
+    }
+
+    return null;
+  }
+
+  Future<List<PostModel>> getPosts(
+    String userId, {
+    int take = 10,
+    int skip = 0,
+  }) async {
     var res = <PostModel>[];
-    var posts = await DB.instance
-        .getAll<Post>(whereMap: {"authorId": userId}, invertWhereClause: true);
+    var posts = await DB.instance.getAll<Post>(
+        whereMap: {"authorId": userId},
+        invertWhereClause: true,
+        take: take,
+        skip: skip);
     for (var post in posts) {
       var author = await DB.instance.get<User>(post.authorId);
       var content =

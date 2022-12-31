@@ -6,10 +6,11 @@ part 'token_request.g.dart';
 class TokenRequest {
   final String login;
   final String password;
-
+  final String? ip;
   TokenRequest({
     required this.login,
     required this.password,
+    this.ip,
   });
 
   factory TokenRequest.fromJson(Map<String, dynamic> json) =>

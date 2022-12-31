@@ -10,12 +10,13 @@ import 'package:dd_study_22_ui/domain/models/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/user.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
-import 'package:dd_study_22_ui/internal/config/token_storage.dart';
 import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
-import 'package:dd_study_22_ui/ui/app_navigator.dart';
-import 'package:dd_study_22_ui/ui/common/camera_widget.dart';
+import 'package:dd_study_22_ui/ui/navigation/app_navigator.dart';
+import 'package:dd_study_22_ui/ui/widgets/common/camera_widget.dart';
+import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   final BuildContext context;
@@ -25,6 +26,10 @@ class ProfileViewModel extends ChangeNotifier {
 
   ProfileViewModel({required this.context}) {
     _asyncInit();
+    var appViewModel = context.read<AppViewModel>();
+    appViewModel.addListener(() {
+      avatar = appViewModel.avatar;
+    });
   }
 
   User? _user;
@@ -41,18 +46,8 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, String>? headers;
-
   void _asyncInit() async {
-    var token = await TokenStorage.getAccessToken();
-    headers = {"Authorization": "Bearer $token"};
     user = await SharedPrefs.getStoredUser();
-    var img = await NetworkAssetBundle(Uri.parse("$baseUrl${user!.avatarLink}"))
-        .load("$baseUrl${user!.avatarLink}?v=1");
-    avatar = Image.memory(
-      img.buffer.asUint8List(),
-      fit: BoxFit.fill,
-    );
 
     await SyncService().syncUserPosts(user!.id);
     posts = await _dataService.getUserPosts(user!.id);
@@ -67,6 +62,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   Future changePhoto() async {
+    var appViewModel = context.read<AppViewModel>();
     await Navigator.of(context).push(MaterialPageRoute(
       builder: (newContext) => Scaffold(
         backgroundColor: Colors.black,
@@ -82,6 +78,7 @@ class ProfileViewModel extends ChangeNotifier {
       ),
     ));
     if (_imagePath != null) {
+      avatar = null;
       var t = await _api.uploadFiles(files: [File(_imagePath!)]);
       if (t.isNotEmpty) {
         await _api.addAvatarToUser(t.first);
@@ -89,7 +86,9 @@ class ProfileViewModel extends ChangeNotifier {
         var img =
             await NetworkAssetBundle(Uri.parse("$baseUrl${user!.avatarLink}"))
                 .load("$baseUrl${user!.avatarLink}?v=1");
-        avatar = Image.memory(img.buffer.asUint8List());
+        var avatarImage = Image.memory(img.buffer.asUint8List());
+
+        appViewModel.avatar = avatarImage;
       }
     }
   }

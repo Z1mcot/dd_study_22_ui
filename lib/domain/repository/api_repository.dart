@@ -5,14 +5,15 @@ import 'package:dd_study_22_ui/domain/models/create_post_model.dart';
 import 'package:dd_study_22_ui/domain/models/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/token_response.dart';
 import 'package:dd_study_22_ui/domain/models/user.dart';
-import 'package:dd_study_22_ui/domain/models/user/register_user_model.dart';
+import 'package:dd_study_22_ui/domain/models/user/sign_up_user_model.dart';
 
 abstract class ApiRepository {
   Future<TokenResponse?> getToken(
-      {required String login, required String password});
+      {required String login, required String password, String? ip});
+
   Future<TokenResponse?> refreshToken(String refreshToken);
 
-  Future registerUser(RegisterUserModel model);
+  Future signUpUser(RegisterUserModel model);
 
   Future<User?> getUser();
 

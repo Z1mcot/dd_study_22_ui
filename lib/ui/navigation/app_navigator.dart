@@ -1,12 +1,14 @@
-import 'package:dd_study_22_ui/ui/roots/app.dart';
-import 'package:dd_study_22_ui/ui/roots/auth.dart';
-import 'package:dd_study_22_ui/ui/roots/loader.dart';
+import 'package:dd_study_22_ui/ui/widgets/roots/registration/sign_up.dart';
+import 'package:dd_study_22_ui/ui/widgets/roots/app/app.dart';
+import 'package:dd_study_22_ui/ui/widgets/roots/auth/auth.dart';
+import 'package:dd_study_22_ui/ui/widgets/roots/loader/loader.dart';
 import 'package:flutter/material.dart';
 
 class NavigationRoute {
   static const loader = '/';
   static const auth = '/auth';
   static const app = '/app';
+  static const registration = "/registration";
 }
 
 class AppNavigator {
@@ -20,6 +22,10 @@ class AppNavigator {
   static Future toAuth() async {
     return key.currentState
         ?.pushNamedAndRemoveUntil(NavigationRoute.auth, (route) => false);
+  }
+
+  static Future toRegistration() async {
+    return key.currentState?.pushNamed(NavigationRoute.registration);
   }
 
   static Future toHome() async {
@@ -37,6 +43,10 @@ class AppNavigator {
       case NavigationRoute.auth:
         return PageRouteBuilder(
           pageBuilder: (_, __, ___) => Auth.create(),
+        );
+      case NavigationRoute.registration:
+        return PageRouteBuilder(
+          pageBuilder: (_, __, ___) => SignUpWidget.create(),
         );
       case NavigationRoute.app:
         return PageRouteBuilder(

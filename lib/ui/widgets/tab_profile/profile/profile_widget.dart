@@ -1,6 +1,5 @@
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
-import 'package:dd_study_22_ui/ui/profile/profile_view_model.dart';
-import 'package:dd_study_22_ui/ui/roots/app_bottom_navigation_bar.dart';
+import 'package:dd_study_22_ui/ui/widgets/tab_profile/profile/profile_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +18,7 @@ class ProfileWidget extends StatelessWidget {
     if (posts != null) {
       for (var post in posts) {
         postWidgets.add(Image(
-            image: NetworkImage("$baseUrl${post.content.first.contentLink}",
-                headers: viewModel.headers),
+            image: NetworkImage("$baseUrl${post.content.first.contentLink}"),
             fit: BoxFit.cover));
       }
     }
@@ -48,18 +46,13 @@ class ProfileWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                        onTap: viewModel.changePhoto,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white, width: 0),
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          width: 100,
-                          height: 100,
-                          child: viewModel.avatar ??
-                              const CircularProgressIndicator(),
-                        )),
+                    viewModel.avatar == null
+                        ? const CircularProgressIndicator()
+                        : GestureDetector(
+                            onTap: viewModel.changePhoto,
+                            child: CircleAvatar(
+                                radius: 50,
+                                foregroundImage: viewModel.avatar?.image)),
                     Column(
                       children: [
                         Text("${user.postsCount}",
@@ -112,9 +105,6 @@ class ProfileWidget extends StatelessWidget {
               ],
             ),
           ),
-        ),
-        bottomNavigationBar: const AppBottomNavigationBar(
-          selectedIcon: NavigationIconSelection.profile,
         ),
       );
     } else {

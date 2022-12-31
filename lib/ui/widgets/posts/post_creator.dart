@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:dd_study_22_ui/ui/posts/add_post_view_model.dart';
+import 'package:dd_study_22_ui/ui/widgets/posts/post_creator_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AddPostWidget extends StatelessWidget {
+class PostCreator extends StatelessWidget {
   final List<String> filePaths;
-  const AddPostWidget({super.key, required this.filePaths});
+  const PostCreator({super.key, required this.filePaths});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class AddPostWidget extends StatelessWidget {
   static create(List<String> filePaths) {
     return ChangeNotifierProvider(
       create: (BuildContext context) => AddPostViewModel(context: context),
-      child: AddPostWidget(
+      child: PostCreator(
         filePaths: filePaths,
       ),
     );

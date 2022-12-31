@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'register_user_model.g.dart';
+part 'sign_up_user_model.g.dart';
 
 @JsonSerializable()
 class RegisterUserModel {

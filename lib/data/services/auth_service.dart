@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dart_ipify/dart_ipify.dart';
 import 'package:dd_study_22_ui/data/services/data_service.dart';
 import 'package:dd_study_22_ui/domain/repository/api_repository.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
@@ -14,7 +15,9 @@ class AuthService {
   Future auth(String? login, String? password) async {
     if (login != null && password != null) {
       try {
-        var token = await _api.getToken(login: login, password: password);
+        var ip = await Ipify.ipv4();
+        var token =
+            await _api.getToken(login: login, password: password, ip: ip);
         if (token != null) {
           await TokenStorage.setStoredToken(token);
 

@@ -9,7 +9,7 @@ import 'package:dd_study_22_ui/domain/models/refresh_token_request.dart';
 import 'package:dd_study_22_ui/domain/models/token_request.dart';
 import 'package:dd_study_22_ui/domain/models/token_response.dart';
 import 'package:dd_study_22_ui/domain/models/user.dart';
-import 'package:dd_study_22_ui/domain/models/user/register_user_model.dart';
+import 'package:dd_study_22_ui/domain/models/user/sign_up_user_model.dart';
 import 'package:dd_study_22_ui/domain/repository/api_repository.dart';
 
 class ApiDataRepository extends ApiRepository {
@@ -18,18 +18,17 @@ class ApiDataRepository extends ApiRepository {
   ApiDataRepository(this._auth, this._api);
 
   @override
-  Future<TokenResponse?> getToken({
-    required String login,
-    required String password,
-  }) async {
+  Future<TokenResponse?> getToken(
+      {required String login, required String password, String? ip}) async {
     return await _auth.getToken(TokenRequest(
       login: login,
       password: password,
+      ip: ip,
     ));
   }
 
   @override
-  Future registerUser(RegisterUserModel model) => _auth.registerUser(model);
+  Future signUpUser(RegisterUserModel model) => _auth.signUpUser(model);
 
   @override
   Future<User?> getUser() => _api.getUser();
