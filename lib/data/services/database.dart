@@ -1,7 +1,9 @@
 import 'package:dd_study_22_ui/domain/db_model.dart';
-import 'package:dd_study_22_ui/domain/models/post.dart';
+import 'package:dd_study_22_ui/domain/models/comment/post_comment.dart';
+import 'package:dd_study_22_ui/domain/models/post/post.dart';
 import 'package:dd_study_22_ui/domain/models/post_content.dart';
-import 'package:dd_study_22_ui/domain/models/user.dart';
+import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
+import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +18,7 @@ class DB {
   Future init() async {
     if (!_isInitialized) {
       var databasePath = await getDatabasesPath();
-      var path = join(databasePath, "db_v1.0.3.db");
+      var path = join(databasePath, "db_v1.0.6.db");
 
       _db = await openDatabase(path, version: 1, onCreate: _createDB);
       _isInitialized = true;
@@ -37,6 +39,8 @@ class DB {
     User: (map) => User.fromMap(map),
     Post: (map) => Post.fromMap(map),
     PostContent: (map) => PostContent.fromMap(map),
+    SimpleUser: (map) => SimpleUser.fromMap(map),
+    PostComment: (map) => PostComment.fromMap(map),
   };
 
   String _dbName(Type type) {

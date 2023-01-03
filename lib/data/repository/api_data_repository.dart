@@ -4,11 +4,12 @@ import 'package:dd_study_22_ui/data/clients/api_client.dart';
 import 'package:dd_study_22_ui/data/clients/auth_client.dart';
 import 'package:dd_study_22_ui/domain/models/attach_meta.dart';
 import 'package:dd_study_22_ui/domain/models/create_post_model.dart';
-import 'package:dd_study_22_ui/domain/models/post_model.dart';
+import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/refresh_token_request.dart';
+import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
 import 'package:dd_study_22_ui/domain/models/token_request.dart';
 import 'package:dd_study_22_ui/domain/models/token_response.dart';
-import 'package:dd_study_22_ui/domain/models/user.dart';
+import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:dd_study_22_ui/domain/models/user/sign_up_user_model.dart';
 import 'package:dd_study_22_ui/domain/repository/api_repository.dart';
 
@@ -34,6 +35,9 @@ class ApiDataRepository extends ApiRepository {
   Future<User?> getUser() => _api.getUser();
 
   @override
+  Future<User?> getUserById(String userId) => _api.getUserById(userId);
+
+  @override
   Future<TokenResponse?> refreshToken(String refreshToken) async =>
       await _auth.refreshToken(RefreshTokenRequest(
         refreshToken: refreshToken,
@@ -56,4 +60,9 @@ class ApiDataRepository extends ApiRepository {
 
   @override
   Future createPost(CreatePostModel model) => _api.createPost(model);
+
+  @override
+  Future<List<SimpleUser>> searchUsers(
+          {required String nameTag, int skip = 0, int take = 10}) =>
+      _api.searchUsers(nameTag, skip, take);
 }

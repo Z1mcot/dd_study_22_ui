@@ -1,9 +1,9 @@
 import 'package:dd_study_22_ui/domain/enums/tab_items.dart';
-import 'package:dd_study_22_ui/domain/models/user.dart';
+import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
 import 'package:dd_study_22_ui/ui/widgets/common/camera_widget.dart';
-import 'package:dd_study_22_ui/ui/widgets/posts/post_creator.dart';
+import 'package:dd_study_22_ui/ui/widgets/posts/post_creator/post_creator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -52,9 +52,12 @@ class AppViewModel extends ChangeNotifier {
 
   void _asyncInit() async {
     user = await SharedPrefs.getStoredUser();
-    var img = await NetworkAssetBundle(Uri.parse("$baseUrl${user!.avatarLink}"))
-        .load("$baseUrl${user!.avatarLink}?v=1");
-    avatar = Image.memory(img.buffer.asUint8List(), fit: BoxFit.fill);
+    if (user!.avatarLink != null) {
+      var img =
+          await NetworkAssetBundle(Uri.parse("$baseUrl${user!.avatarLink}"))
+              .load("$baseUrl${user!.avatarLink}?v=1");
+      avatar = Image.memory(img.buffer.asUint8List(), fit: BoxFit.fill);
+    }
     imagePaths = <String>[];
   }
 

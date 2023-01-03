@@ -3,16 +3,21 @@ import 'package:dd_study_22_ui/data/services/sync_service.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
-import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
 import 'package:dd_study_22_ui/ui/navigation/tab_navigator.dart';
+import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class HomeViewModel extends ChangeNotifier {
-  BuildContext context;
+class UserProfileViewModel extends ChangeNotifier {
+  final BuildContext context;
   final _dataService = DataService();
-  final _lvc = ScrollController();
-  ScrollController get lvc => _lvc;
+  String errMsg = "";
+
+  final String? userId;
+
+  final _gvc = ScrollController();
+  ScrollController get gvc => _gvc;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -21,11 +26,12 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  HomeViewModel({required this.context}) {
+  UserProfileViewModel({required this.context, required this.userId}) {
     _asyncInit();
-    _lvc.addListener(() async {
-      var max = _lvc.position.maxScrollExtent;
-      var current = _lvc.offset;
+
+    _gvc.addListener(() async {
+      var max = _gvc.position.maxScrollExtent;
+      var current = _gvc.offset;
       var percent = current / max * 100;
 
       if (percent > 80) {
@@ -35,13 +41,18 @@ class HomeViewModel extends ChangeNotifier {
             (value) async {
               var postCount = posts!.length;
               var newPosts =
-                  await _dataService.getPosts(user!.id, skip: postCount);
+                  await _dataService.getUserPosts(user!.id, skip: postCount);
               posts = <PostModel>[...posts!, ...newPosts];
               isLoading = false;
             },
           );
         }
       }
+    });
+
+    var appViewModel = context.read<AppViewModel>();
+    appViewModel.addListener(() {
+      avatar = appViewModel.avatar;
     });
   }
 
@@ -52,6 +63,35 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<PostModel>? _posts;
+  List<PostModel>? get posts => _posts;
+  set posts(List<PostModel>? value) {
+    _posts = value;
+    notifyListeners();
+  }
+
+  Map<String, String>? headers;
+
+  void _asyncInit() async {
+    try {
+      var token = await TokenStorage.getAccessToken();
+      headers = {"Authorization": "Bearer $token"};
+
+      await SyncService().syncUserProfile(userId!);
+      user = await _dataService.getUserById(userId!);
+
+      avatar = Image.network(
+        "$baseUrl${user!.avatarLink}",
+        headers: headers,
+      );
+
+      await SyncService().syncUserPosts(user!.id);
+      posts = await _dataService.getUserPosts(user!.id);
+    } catch (exception) {
+      errMsg = "User not found!";
+    }
+  }
+
   Image? _avatar;
   Image? get avatar => _avatar;
   set avatar(Image? value) {
@@ -59,51 +99,8 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<PostModel>? _posts;
-  List<PostModel>? get posts => _posts;
-  set posts(List<PostModel>? val) {
-    _posts = val;
-    notifyListeners();
-  }
-
-  Map<int, int> pager = <int, int>{};
-
-  void onPageChanged(int listIndex, int pageIndex) {
-    pager[listIndex] = pageIndex;
-    notifyListeners();
-  }
-
-  Map<String, String>? headers;
-
-  void _asyncInit() async {
-    var token = await TokenStorage.getAccessToken();
-    headers = {"Authorization": "Bearer $token"};
-
-    user = await SharedPrefs.getStoredUser();
-    avatar = Image.network(
-      "$baseUrl${user!.avatarLink}",
-      fit: BoxFit.fill,
-    );
-
-    await SyncService().syncPosts();
-    posts = await _dataService.getPosts(user!.id);
-  }
-
-  void onClick() {
-    _lvc.animateTo(
-      0,
-      duration: const Duration(seconds: 1),
-      curve: Curves.easeInCubic,
-    );
-  }
-
   void toPostDetail(String postId) {
     Navigator.of(context)
         .pushNamed(TabNavigatorRoutes.postDetails, arguments: postId);
-  }
-
-  void toUserProfile(String userId) {
-    Navigator.of(context)
-        .pushNamed(TabNavigatorRoutes.userProfile, arguments: userId);
   }
 }

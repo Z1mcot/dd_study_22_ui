@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dd_study_22_ui/ui/widgets/posts/post_creator_view_model.dart';
+import 'package:dd_study_22_ui/ui/widgets/posts/post_creator/post_creator_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

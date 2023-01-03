@@ -1,6 +1,6 @@
 import 'package:dd_study_22_ui/domain/enums/tab_items.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
-import 'package:dd_study_22_ui/ui/widgets/tab_profile/profile/profile_widget.dart';
+import 'package:dd_study_22_ui/ui/widgets/tab_profile/profile/self_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,8 +15,8 @@ class BottomTabs extends StatelessWidget {
   });
 
   static Future toProfile(BuildContext context) async {
-    return Navigator.of(context).push(
-        MaterialPageRoute(builder: (newContext) => ProfileWidget.create()));
+    return Navigator.of(context)
+        .push(MaterialPageRoute(builder: (newContext) => SelfProfile.create()));
   }
 
   @override
@@ -42,12 +42,13 @@ class BottomTabs extends StatelessWidget {
     Widget? icon = Icon(
       TabEnums.tabIcon[tabItem],
       color: color,
+      size: 25,
     );
 
     if (tabItem == TabItemEnum.profile) {
       icon = CircleAvatar(
-        maxRadius: isCurrent ? 12 : 10,
-        backgroundImage: appViewModel.avatar?.image,
+        maxRadius: isCurrent ? 20 : 18,
+        foregroundImage: appViewModel.avatar?.image,
       );
     }
 

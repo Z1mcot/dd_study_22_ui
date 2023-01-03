@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:dd_study_22_ui/domain/models/user.dart';
+import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {

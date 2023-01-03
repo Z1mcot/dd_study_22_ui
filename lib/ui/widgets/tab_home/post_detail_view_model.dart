@@ -1,9 +1,10 @@
 import 'package:dd_study_22_ui/data/services/data_service.dart';
-import 'package:dd_study_22_ui/domain/models/post_model.dart';
-import 'package:dd_study_22_ui/domain/models/user.dart';
+import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
+import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
+import 'package:dd_study_22_ui/ui/navigation/tab_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
@@ -55,6 +56,11 @@ class PostDetailViewModel extends ChangeNotifier {
   void onPageChanged(int listIndex, int pageIndex) {
     pager[listIndex] = pageIndex;
     notifyListeners();
+  }
+
+  void toUserProfile(String userId) {
+    Navigator.of(context)
+        .pushNamed(TabNavigatorRoutes.userProfile, arguments: userId);
   }
 }
 

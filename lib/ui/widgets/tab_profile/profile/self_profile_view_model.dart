@@ -4,28 +4,62 @@ import 'package:dd_study_22_ui/data/services/auth_service.dart';
 import 'package:dd_study_22_ui/data/services/data_service.dart';
 import 'package:dd_study_22_ui/data/services/database.dart';
 import 'package:dd_study_22_ui/data/services/sync_service.dart';
-import 'package:dd_study_22_ui/domain/models/post.dart';
+import 'package:dd_study_22_ui/domain/models/post/post.dart';
+import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
+
 import 'package:dd_study_22_ui/domain/models/post_content.dart';
-import 'package:dd_study_22_ui/domain/models/post_model.dart';
-import 'package:dd_study_22_ui/domain/models/user.dart';
+
+import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
 import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
 import 'package:dd_study_22_ui/ui/navigation/app_navigator.dart';
+import 'package:dd_study_22_ui/ui/navigation/tab_navigator.dart';
 import 'package:dd_study_22_ui/ui/widgets/common/camera_widget.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class ProfileViewModel extends ChangeNotifier {
+class SelfProfileViewModel extends ChangeNotifier {
   final BuildContext context;
   final _authService = AuthService();
   final _api = RepositoryModule.apiRepository();
   final _dataService = DataService();
 
-  ProfileViewModel({required this.context}) {
+  final _gvc = ScrollController();
+  ScrollController get gvc => _gvc;
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  set isLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  SelfProfileViewModel({required this.context}) {
     _asyncInit();
+    _gvc.addListener(() async {
+      var max = _gvc.position.maxScrollExtent;
+      var current = _gvc.offset;
+      var percent = current / max * 100;
+
+      if (percent > 80) {
+        if (!isLoading) {
+          isLoading = true;
+          Future.delayed(const Duration(seconds: 1)).then(
+            (value) async {
+              var postCount = posts!.length;
+              var newPosts =
+                  await _dataService.getUserPosts(user!.id, skip: postCount);
+              posts = <PostModel>[...posts!, ...newPosts];
+              isLoading = false;
+            },
+          );
+        }
+      }
+    });
+
     var appViewModel = context.read<AppViewModel>();
     appViewModel.addListener(() {
       avatar = appViewModel.avatar;
@@ -63,7 +97,8 @@ class ProfileViewModel extends ChangeNotifier {
 
   Future changePhoto() async {
     var appViewModel = context.read<AppViewModel>();
-    await Navigator.of(context).push(MaterialPageRoute(
+    await Navigator.of(AppNavigator.key.currentState!.context)
+        .push(MaterialPageRoute(
       builder: (newContext) => Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(backgroundColor: Colors.black),
@@ -98,5 +133,10 @@ class ProfileViewModel extends ChangeNotifier {
     await DB.instance.cleanTable<Post>();
     await DB.instance.cleanTable<PostContent>();
     await _authService.logout().then((value) => AppNavigator.toLoader());
+  }
+
+  void toPostDetail(String postId) {
+    Navigator.of(context)
+        .pushNamed(TabNavigatorRoutes.postDetails, arguments: postId);
   }
 }

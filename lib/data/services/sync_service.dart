@@ -1,13 +1,13 @@
 import 'package:dd_study_22_ui/data/services/data_service.dart';
-import 'package:dd_study_22_ui/domain/models/post.dart';
+import 'package:dd_study_22_ui/domain/models/post/post.dart';
 import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
 
 class SyncService {
   final _api = RepositoryModule.apiRepository();
   final _dataService = DataService();
 
-  Future syncPosts() async {
-    var postModels = await _api.getPosts(0, 100);
+  Future syncPosts({int skip = 0, int take = 100}) async {
+    var postModels = await _api.getPosts(skip, take);
 
     var authors = postModels.map((e) => e.author).toSet();
     var postContent = postModels
@@ -38,5 +38,12 @@ class SyncService {
     await _dataService.rangeUpdateEntities(authors);
     await _dataService.rangeUpdateEntities(posts);
     await _dataService.rangeUpdateEntities(postContent);
+  }
+
+  Future syncUserProfile(String userProfileId) async {
+    var user = await _api.getUserById(userProfileId);
+    if (user != null) {
+      await _dataService.createUpdateUser(user);
+    }
   }
 }

@@ -39,10 +39,12 @@ class PostInfo extends StatelessWidget {
                   ),
                 ],
               ),
-              PageIndicator(
-                count: postContentCount,
-                current: currentPostContent,
-              ),
+              postContentCount > 1
+                  ? PageIndicator(
+                      count: postContentCount,
+                      current: currentPostContent,
+                    )
+                  : const SizedBox.shrink(),
               const SizedBox(
                 width: 100,
               )

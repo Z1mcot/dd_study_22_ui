@@ -1,4 +1,4 @@
-import 'package:dd_study_22_ui/ui/widgets/posts/post.dart';
+import 'package:dd_study_22_ui/ui/widgets/posts/list_post_widget/post.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_home/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,20 +27,17 @@ class Home extends StatelessWidget {
                     var posts = viewModel.posts;
                     if (posts != null) {
                       var post = posts[listIndex];
-                      res = GestureDetector(
-                        onTap: () => viewModel.toPostDetail(post.id),
-                        child: PostWidget(
-                          size: size,
-                          post: post,
-                          listIndex: listIndex,
-                        ),
+                      res = PostWidget(
+                        size: size,
+                        post: post,
+                        listIndex: listIndex,
                       );
                     } else {
                       res = const SizedBox.shrink();
                     }
                     return res;
                   },
-                  separatorBuilder: (context, index) => const Divider(),
+                  separatorBuilder: (_, __) => const Divider(),
                   itemCount: itemCount ?? 0,
                 )),
                 if (viewModel.isLoading) const LinearProgressIndicator(),
