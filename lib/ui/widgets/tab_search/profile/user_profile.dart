@@ -1,4 +1,3 @@
-import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/ui/widgets/user_profile/profile_post_tile.dart';
 import 'package:dd_study_22_ui/ui/widgets/user_profile/user_info.dart';
 import 'package:dd_study_22_ui/ui/widgets/user_profile/user_metrics.dart';
@@ -33,11 +32,16 @@ class UserProfileWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    viewModel.avatar == null
-                        ? const CircularProgressIndicator()
-                        : CircleAvatar(
+                    viewModel.user!.avatarLink == null
+                        ? const CircleAvatar(
                             radius: 50,
-                            foregroundImage: viewModel.avatar?.image),
+                            child: Icon(Icons.account_circle_rounded),
+                          )
+                        : viewModel.avatar == null
+                            ? const CircularProgressIndicator()
+                            : CircleAvatar(
+                                radius: 50,
+                                foregroundImage: viewModel.avatar?.image),
                     UserMetrics(
                       postsCount: user.postsCount,
                       subscribersCount: user.subscribersCount,
@@ -87,7 +91,7 @@ class UserProfileWidget extends StatelessWidget {
                           ),
                         );
                       } else {
-                        res = SizedBox.shrink();
+                        res = const SizedBox.shrink();
                       }
                       return res;
                     },

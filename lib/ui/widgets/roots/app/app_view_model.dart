@@ -2,8 +2,6 @@ import 'package:dd_study_22_ui/domain/enums/tab_items.dart';
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
-import 'package:dd_study_22_ui/ui/widgets/common/camera_widget.dart';
-import 'package:dd_study_22_ui/ui/widgets/posts/post_creator/post_creator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,10 +11,12 @@ class AppViewModel extends ChangeNotifier {
     _asyncInit();
   }
 
+  bool isBottomBarVisible = true;
+
   final navigationKeys = {
     TabItemEnum.home: GlobalKey<NavigatorState>(),
     TabItemEnum.search: GlobalKey<NavigatorState>(),
-    TabItemEnum.newPost: GlobalKey<NavigatorState>(),
+    TabItemEnum.newContent: GlobalKey<NavigatorState>(),
     TabItemEnum.favourites: GlobalKey<NavigatorState>(),
     TabItemEnum.profile: GlobalKey<NavigatorState>(),
   };
@@ -66,37 +66,5 @@ class AppViewModel extends ChangeNotifier {
   set imagePaths(List<String>? value) {
     _imagePaths = value;
     notifyListeners();
-  }
-
-  void createPost() async {
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (newContext) => Scaffold(
-          backgroundColor: Colors.black38,
-          appBar: AppBar(backgroundColor: Colors.black38),
-          body: SafeArea(
-            child: CameraWidget(
-              onFile: (file) {
-                imagePaths!.add(file.path);
-              },
-            ),
-          ),
-          bottomNavigationBar: BottomAppBar(
-            color: Colors.black,
-            child: IconButton(
-              onPressed: () async => imagePaths!.isNotEmpty
-                  ? await Navigator.of(newContext).push(MaterialPageRoute(
-                      builder: (newContext) => PostCreator.create(imagePaths!),
-                    ))
-                  : null,
-              icon: const Icon(
-                Icons.navigate_next,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

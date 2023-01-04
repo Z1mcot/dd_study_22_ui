@@ -29,9 +29,12 @@ class App extends StatelessWidget {
             return isFirstRouteInCurrentTab;
           },
           child: Scaffold(
-            bottomNavigationBar: BottomTabs(
-              currentTab: viewModel.currentTab,
-              onSelectTab: viewModel.selectTab,
+            bottomNavigationBar: Visibility(
+              visible: viewModel.isBottomBarVisible,
+              child: BottomTabs(
+                currentTab: viewModel.currentTab,
+                onSelectTab: viewModel.selectTab,
+              ),
             ),
             body: Stack(
               children: TabItemEnum.values

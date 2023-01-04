@@ -1,4 +1,5 @@
 import 'package:dd_study_22_ui/domain/enums/tab_items.dart';
+import 'package:dd_study_22_ui/ui/widgets/tab_create/new_post/new_post.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_home/post_detail.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_search/profile/user_profile.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,8 @@ class TabNavigatorRoutes {
   static const String root = "/app/";
   static const String postDetails = "/app/postDetail";
   static const String userProfile = "/app/userProfile";
+  static const String createPost = "/app/createPost";
+  static const String createStories = "/app/createStories";
 }
 
 class TabNavigator extends StatelessWidget {
@@ -28,7 +31,8 @@ class TabNavigator extends StatelessWidget {
             ),
         TabNavigatorRoutes.postDetails: (context) => PostDetail.create(arg),
         TabNavigatorRoutes.userProfile: (context) =>
-            UserProfileWidget.create(arg)
+            UserProfileWidget.create(arg),
+        TabNavigatorRoutes.createPost: (context) => NewPost.create(),
       };
 
   @override

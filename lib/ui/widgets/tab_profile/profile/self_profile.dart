@@ -1,5 +1,5 @@
+import 'package:dd_study_22_ui/ui/widgets/tab_profile/profile/self_profile_post_tile.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_profile/profile/self_profile_view_model.dart';
-import 'package:dd_study_22_ui/ui/widgets/user_profile/profile_post_tile.dart';
 import 'package:dd_study_22_ui/ui/widgets/user_profile/user_info.dart';
 import 'package:dd_study_22_ui/ui/widgets/user_profile/user_metrics.dart';
 import 'package:flutter/material.dart';
@@ -38,13 +38,18 @@ class SelfProfile extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    viewModel.avatar == null
-                        ? const CircularProgressIndicator()
-                        : GestureDetector(
-                            onTap: viewModel.changePhoto,
-                            child: CircleAvatar(
-                                radius: 50,
-                                foregroundImage: viewModel.avatar?.image)),
+                    viewModel.user!.avatarLink == null
+                        ? const CircleAvatar(
+                            radius: 50,
+                            child: Icon(Icons.account_circle_rounded),
+                          )
+                        : viewModel.avatar == null
+                            ? const CircularProgressIndicator()
+                            : GestureDetector(
+                                onTap: viewModel.changePhoto,
+                                child: CircleAvatar(
+                                    radius: 50,
+                                    foregroundImage: viewModel.avatar?.image)),
                     UserMetrics(
                       postsCount: user.postsCount,
                       subscribersCount: user.subscribersCount,
@@ -73,12 +78,13 @@ class SelfProfile extends StatelessWidget {
                   child: GridView.builder(
                     controller: viewModel.gvc,
                     gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
                       childAspectRatio: 1,
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20,
                     ),
+                    itemCount: itemCount,
                     itemBuilder: (_, gridIndex) {
                       Widget res;
                       var posts = viewModel.posts;
@@ -86,14 +92,14 @@ class SelfProfile extends StatelessWidget {
                         var post = posts[gridIndex];
                         res = GestureDetector(
                           onTap: () => viewModel.toPostDetail(post.id),
-                          child: ProfilePostTile(
+                          child: SelfProfilePostTile(
                             size: size,
                             post: post,
                             gridIndex: gridIndex,
                           ),
                         );
                       } else {
-                        res = SizedBox.shrink();
+                        res = const SizedBox.shrink();
                       }
                       return res;
                     },

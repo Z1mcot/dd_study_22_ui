@@ -6,7 +6,9 @@ import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
 import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
 import 'package:dd_study_22_ui/ui/navigation/app_navigator.dart';
+import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddPostViewModel extends ChangeNotifier {
   final BuildContext context;
@@ -45,6 +47,12 @@ class AddPostViewModel extends ChangeNotifier {
       }
     }
 
+    showBottomBar();
     await AppNavigator.toHome();
+  }
+
+  void showBottomBar() {
+    var appViewModel = context.read<AppViewModel>();
+    appViewModel.isBottomBarVisible = true;
   }
 }
