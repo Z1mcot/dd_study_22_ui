@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dd_study_22_ui/domain/models/create_post_model.dart';
+import 'package:dd_study_22_ui/domain/models/post/create_post_model.dart';
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';

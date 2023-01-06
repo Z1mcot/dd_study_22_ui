@@ -1,11 +1,13 @@
 import 'package:dd_study_22_ui/data/services/database.dart';
 import 'package:dd_study_22_ui/domain/db_model.dart';
+import 'package:dd_study_22_ui/domain/models/comment/comment_model.dart';
+import 'package:dd_study_22_ui/domain/models/comment/post_comment.dart';
 import 'package:dd_study_22_ui/domain/models/post/post.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
-import 'package:dd_study_22_ui/domain/models/post_content.dart';
+import 'package:dd_study_22_ui/domain/models/post/post_content.dart';
 import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
-import 'package:dd_study_22_ui/ui/widgets/tab_home/post_detail_view_model.dart';
+import 'package:dd_study_22_ui/ui/widgets/tab_home/post_detail/post_detail_view_model.dart';
 
 class DataService {
   Future createUpdateUser(User user) async {
@@ -42,6 +44,10 @@ class DataService {
           content: content,
           publishDate: post.publishDate,
           description: post.description,
+          likes: post.likes,
+          comments: post.comments,
+          isLiked: post.isLiked,
+          isModified: post.isModified,
         ));
       }
     }
@@ -63,6 +69,10 @@ class DataService {
           content: content,
           publishDate: post.publishDate,
           description: post.description,
+          likes: post.likes,
+          comments: post.comments,
+          isLiked: post.isLiked,
+          isModified: post.isModified,
         );
       }
     }
@@ -93,7 +103,36 @@ class DataService {
           content: content,
           publishDate: post.publishDate,
           description: post.description,
+          likes: post.likes,
+          comments: post.comments,
+          isLiked: post.isLiked,
+          isModified: post.isModified,
         ));
+      }
+    }
+
+    return res;
+  }
+
+  Future<List<CommentModel>> getPostComments({
+    required String postId,
+    int take = 10,
+    int skip = 0,
+  }) async {
+    var res = <CommentModel>[];
+    var comments = await DB.instance.getAll<PostComment>(
+        whereMap: {"postId": postId}, take: take, skip: skip);
+
+    for (var comment in comments) {
+      var author = await DB.instance.get<SimpleUser>(comment.authorId);
+      if (author != null) {
+        res.add(CommentModel(
+            id: comment.id,
+            author: author,
+            content: comment.content,
+            likes: comment.likes,
+            isLiked: comment.isLiked,
+            publishDate: comment.publishDate));
       }
     }
 

@@ -1,0 +1,4 @@
+enum ProfileTypeEnum {
+  selfProfile,
+  anotherUserProfile,
+}

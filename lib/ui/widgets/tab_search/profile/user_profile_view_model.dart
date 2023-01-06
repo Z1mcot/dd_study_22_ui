@@ -1,23 +1,20 @@
 import 'package:dd_study_22_ui/data/services/data_service.dart';
 import 'package:dd_study_22_ui/data/services/sync_service.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
-import 'package:dd_study_22_ui/domain/models/user/user.dart';
+import 'package:dd_study_22_ui/domain/navigator_arguments.dart/tab_navigatior_arguments.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
 import 'package:dd_study_22_ui/ui/navigation/tab_navigator.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
+import 'package:dd_study_22_ui/ui/widgets/user_profile/profile_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class UserProfileViewModel extends ChangeNotifier {
-  final BuildContext context;
+class UserProfileViewModel extends ProfileViewModel {
   final _dataService = DataService();
   String errMsg = "";
 
   final String? userId;
-
-  final _gvc = ScrollController();
-  ScrollController get gvc => _gvc;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -26,12 +23,12 @@ class UserProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  UserProfileViewModel({required this.context, required this.userId}) {
-    _asyncInit();
+  UserProfileViewModel({required super.context, required this.userId}) {
+    asyncInit();
 
-    _gvc.addListener(() async {
-      var max = _gvc.position.maxScrollExtent;
-      var current = _gvc.offset;
+    gvc.addListener(() async {
+      var max = gvc.position.maxScrollExtent;
+      var current = gvc.offset;
       var percent = current / max * 100;
 
       if (percent > 80) {
@@ -56,23 +53,8 @@ class UserProfileViewModel extends ChangeNotifier {
     });
   }
 
-  User? _user;
-  User? get user => _user;
-  set user(User? value) {
-    _user = value;
-    notifyListeners();
-  }
-
-  List<PostModel>? _posts;
-  List<PostModel>? get posts => _posts;
-  set posts(List<PostModel>? value) {
-    _posts = value;
-    notifyListeners();
-  }
-
-  Map<String, String>? headers;
-
-  void _asyncInit() async {
+  @override
+  void asyncInit() async {
     try {
       var token = await TokenStorage.getAccessToken();
       headers = {"Authorization": "Bearer $token"};
@@ -92,15 +74,34 @@ class UserProfileViewModel extends ChangeNotifier {
     }
   }
 
-  Image? _avatar;
-  Image? get avatar => _avatar;
-  set avatar(Image? value) {
-    _avatar = value;
-    notifyListeners();
+  @override
+  void toPostDetail(String postId) {
+    Navigator.of(context).pushNamed(TabNavigatorRoutes.postDetails,
+        arguments: TabNavigatiorArguments(
+          postId: postId,
+          userId: userId,
+        ));
   }
 
-  void toPostDetail(String postId) {
-    Navigator.of(context)
-        .pushNamed(TabNavigatorRoutes.postDetails, arguments: postId);
+  @override
+  Widget getUserAvatar() {
+    if (user!.avatarLink == null) {
+      return const CircleAvatar(
+        radius: 50,
+        child: Icon(Icons.account_circle_rounded),
+      );
+    }
+
+    if (avatar == null) {
+      return const CircularProgressIndicator();
+    }
+
+    return CircleAvatar(radius: 50, foregroundImage: avatar?.image);
+  }
+
+  @override
+  Future refreshView() async {
+    asyncInit();
+    notifyListeners();
   }
 }

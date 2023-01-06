@@ -1,17 +1,18 @@
+import 'package:dd_study_22_ui/domain/enums/post_view_types.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
-import 'package:dd_study_22_ui/ui/widgets/posts/list_post_widget/post_image.dart';
-import 'package:dd_study_22_ui/ui/widgets/posts/list_post_widget/post_info.dart';
-import 'package:dd_study_22_ui/ui/widgets/tab_home/home_view_model.dart';
+import 'package:dd_study_22_ui/ui/widgets/posts/home_posts/post_image.dart';
+import 'package:dd_study_22_ui/ui/widgets/posts/home_posts/post_info.dart';
+import 'package:dd_study_22_ui/ui/widgets/tab_home/home/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class PostWidget extends StatelessWidget {
+class ListViewPost extends StatelessWidget {
   final Size size;
   final PostModel post;
   final int listIndex;
 
-  const PostWidget({
+  const ListViewPost({
     super.key,
     required this.size,
     required this.post,
@@ -21,6 +22,7 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var homeViewModel = context.read<HomeViewModel>();
+
     return GestureDetector(
       onTap: () => homeViewModel.toPostDetail(post.id),
       child: Container(
@@ -50,7 +52,7 @@ class PostWidget extends StatelessWidget {
                       width: 10,
                     ),
                     Text(
-                      post.author.nameTag,
+                      post.author.name,
                       style: const TextStyle(fontSize: 15),
                     ),
                   ],
@@ -72,21 +74,15 @@ class PostWidget extends StatelessWidget {
               ),
             ),
             PostInfo(
-              postContentCount: post.content.length,
-              currentPostContent: homeViewModel.pager[listIndex],
-              description: post.description,
-            ),
-            Container(
-              padding: const EdgeInsets.only(left: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "comments: ${post.comments ?? 0}",
-                  ),
-                ],
-              ),
-            ),
+                postId: post.id,
+                postContentCount: post.content.length,
+                currentPostContent: homeViewModel.pager[listIndex],
+                description: post.description,
+                isLiked: post.isLiked == 0 ? false : true,
+                likes: post.likes,
+                comments: post.comments,
+                nameTag: post.author.nameTag,
+                postViewType: PostViewTypeEnum.fromHome),
           ],
         ),
       ),

@@ -1,0 +1,4 @@
+enum PostViewTypeEnum {
+  fromHome,
+  fromPostDetails,
+}

@@ -1,4 +1,4 @@
-import 'package:dd_study_22_ui/domain/models/post_content.dart';
+import 'package:dd_study_22_ui/domain/models/post/post_content.dart';
 import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,22 +10,22 @@ class PostModel {
   final String? description;
   final SimpleUser author;
   final List<PostContent> content;
-  final int? likes;
-  final int? comments;
-  final String publishDate;
-  final bool? isModified;
-  final bool? isLiked;
+  final int likes;
+  final int comments;
+  final DateTime publishDate;
+  final int isModified;
+  final int isLiked;
 
   PostModel({
     required this.id,
     this.description,
     required this.author,
     required this.content,
-    this.likes,
-    this.comments,
+    required this.likes,
+    required this.comments,
     required this.publishDate,
-    this.isModified,
-    this.isLiked,
+    required this.isModified,
+    required this.isLiked,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) =>

@@ -1,6 +1,5 @@
-import 'package:dd_study_22_ui/domain/db_model.dart';
-import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:dd_study_22_ui/domain/db_model.dart';
 
 part 'post_comment.g.dart';
 
@@ -8,15 +7,17 @@ part 'post_comment.g.dart';
 class PostComment implements DbModel {
   @override
   final String id;
-  final SimpleUser author;
+  final String? authorId;
+  final String? postId;
   final String content;
   final int likes;
-  final bool isLiked;
-  final String publishDate;
+  final int isLiked;
+  final DateTime publishDate;
 
   PostComment({
     required this.id,
-    required this.author,
+    this.authorId,
+    this.postId,
     required this.content,
     required this.likes,
     required this.isLiked,
@@ -37,15 +38,17 @@ class PostComment implements DbModel {
 
   PostComment copyWith({
     String? id,
-    SimpleUser? author,
+    String? authorId,
+    String? postId,
     String? content,
     int? likes,
-    bool? isLiked,
-    String? publishDate,
+    int? isLiked,
+    DateTime? publishDate,
   }) {
     return PostComment(
       id: id ?? this.id,
-      author: author ?? this.author,
+      authorId: authorId ?? this.authorId,
+      postId: postId ?? this.postId,
       content: content ?? this.content,
       likes: likes ?? this.likes,
       isLiked: isLiked ?? this.isLiked,

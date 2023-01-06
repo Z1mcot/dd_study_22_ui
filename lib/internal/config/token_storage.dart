@@ -1,4 +1,4 @@
-import 'package:dd_study_22_ui/domain/models/token_response.dart';
+import 'package:dd_study_22_ui/domain/models/token/token_response.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class TokenStorage {

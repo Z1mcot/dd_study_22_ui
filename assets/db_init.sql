@@ -37,9 +37,11 @@ CREATE TABLE t_PostContent (
 CREATE TABLE t_PostComment (
   id                      TEXT NOT NULL PRIMARY KEY
   ,authorId               TEXT NOT NULL
+  ,postId                 TEXT NOT NULL
   ,content                TEXT
   ,likes                  INTEGER
   ,isLiked                INTEGER
   ,publishDate            TEXT
   ,FOREIGN KEY(authorId) REFERENCES t_SimpleUser(id)
+  ,FOREIGN KEY(postId) REFERENCES t_Post(id)
 );

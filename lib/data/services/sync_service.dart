@@ -1,4 +1,5 @@
 import 'package:dd_study_22_ui/data/services/data_service.dart';
+import 'package:dd_study_22_ui/domain/models/comment/post_comment.dart';
 import 'package:dd_study_22_ui/domain/models/post/post.dart';
 import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
 
@@ -45,5 +46,16 @@ class SyncService {
     if (user != null) {
       await _dataService.createUpdateUser(user);
     }
+  }
+
+  Future syncPostComments(String postId) async {
+    var commentModels = await _api.getPostComments(postId, 0, 100);
+    var authors = commentModels.map((e) => e.author).toSet();
+
+    var comments = commentModels.map((e) => PostComment.fromJson(e.toJson())
+        .copyWith(authorId: e.author.id, postId: postId));
+
+    await _dataService.rangeUpdateEntities(authors);
+    await _dataService.rangeUpdateEntities(comments);
   }
 }

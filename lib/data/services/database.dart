@@ -1,7 +1,7 @@
 import 'package:dd_study_22_ui/domain/db_model.dart';
 import 'package:dd_study_22_ui/domain/models/comment/post_comment.dart';
 import 'package:dd_study_22_ui/domain/models/post/post.dart';
-import 'package:dd_study_22_ui/domain/models/post_content.dart';
+import 'package:dd_study_22_ui/domain/models/post/post_content.dart';
 import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:path/path.dart';
@@ -18,7 +18,7 @@ class DB {
   Future init() async {
     if (!_isInitialized) {
       var databasePath = await getDatabasesPath();
-      var path = join(databasePath, "db_v1.0.6.db");
+      var path = join(databasePath, "db_v1.0.8.db");
 
       _db = await openDatabase(path, version: 1, onCreate: _createDB);
       _isInitialized = true;

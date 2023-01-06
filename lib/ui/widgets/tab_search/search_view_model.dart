@@ -47,7 +47,6 @@ class SearchViewModel extends ChangeNotifier {
   }
 
   SearchViewModelState _state = SearchViewModelState();
-
   SearchViewModelState get state => _state;
   set state(SearchViewModelState value) {
     _state = value;

@@ -1,17 +1,22 @@
 import 'package:dd_study_22_ui/data/services/data_service.dart';
 import 'package:dd_study_22_ui/data/services/sync_service.dart';
+import 'package:dd_study_22_ui/domain/models/post/post_like.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
+import 'package:dd_study_22_ui/domain/navigator_arguments.dart/tab_navigatior_arguments.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
+import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
 import 'package:dd_study_22_ui/ui/navigation/tab_navigator.dart';
+import 'package:dd_study_22_ui/ui/widgets/posts/home_posts/posts_with_info.dart';
 import 'package:flutter/material.dart';
 
-class HomeViewModel extends ChangeNotifier {
+class HomeViewModel extends PostsWithInfo {
   BuildContext context;
   final _dataService = DataService();
   final _lvc = ScrollController();
+  final _api = RepositoryModule.apiRepository();
   ScrollController get lvc => _lvc;
 
   bool _isLoading = false;
@@ -98,12 +103,30 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   void toPostDetail(String postId) {
-    Navigator.of(context)
-        .pushNamed(TabNavigatorRoutes.postDetails, arguments: postId);
+    Navigator.of(context).pushNamed(TabNavigatorRoutes.postDetails,
+        arguments: TabNavigatiorArguments(postId: postId));
   }
 
   void toUserProfile(String userId) {
-    Navigator.of(context)
-        .pushNamed(TabNavigatorRoutes.userProfile, arguments: userId);
+    Navigator.of(context).pushNamed(TabNavigatorRoutes.userProfile,
+        arguments: TabNavigatiorArguments(userId: userId));
+  }
+
+  @override
+  void onLikeClick(String postId) {
+    var likeModel = PostLikeModel(userId: user!.id, postId: postId);
+    _api.likePost(likeModel);
+    _asyncInit();
+  }
+
+  @override
+  void onCommentClick(String commentId) {
+    // TODO: implement onCommentClick
+  }
+
+  @override
+  Future refreshView() async {
+    _asyncInit();
+    notifyListeners();
   }
 }

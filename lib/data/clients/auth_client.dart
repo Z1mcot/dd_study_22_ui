@@ -1,6 +1,6 @@
-import 'package:dd_study_22_ui/domain/models/refresh_token_request.dart';
-import 'package:dd_study_22_ui/domain/models/token_request.dart';
-import 'package:dd_study_22_ui/domain/models/token_response.dart';
+import 'package:dd_study_22_ui/domain/models/token/refresh_token_request.dart';
+import 'package:dd_study_22_ui/domain/models/token/token_request.dart';
+import 'package:dd_study_22_ui/domain/models/token/token_response.dart';
 import 'package:dd_study_22_ui/domain/models/user/sign_up_user_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';

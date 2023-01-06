@@ -1,6 +1,6 @@
 // import 'package:dd_study_22_ui/ui/widgets/tab_create/new_post/new_post.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_create/create.dart';
-import 'package:dd_study_22_ui/ui/widgets/tab_home/home.dart';
+import 'package:dd_study_22_ui/ui/widgets/tab_home/home/home.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_profile/profile/self_profile.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_search/search.dart';
 import 'package:flutter/material.dart';
