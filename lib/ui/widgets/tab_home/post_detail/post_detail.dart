@@ -16,6 +16,11 @@ class PostDetail extends StatelessWidget {
     var viewModel = context.watch<PostDetailViewModel>();
     var size = MediaQuery.of(context).size;
     var post = viewModel.post;
+
+    var comments = viewModel.comments?.length ?? 0;
+    var likes = viewModel.post?.likes ?? 0;
+    var isLiked = viewModel.post?.isLiked == 1 ? true : false;
+
     if (post != null) {
       return Scaffold(
         appBar: AppBar(),
@@ -78,9 +83,9 @@ class PostDetail extends StatelessWidget {
                       postContentCount: post.content.length,
                       currentPostContent: viewModel.pager[0],
                       description: post.description,
-                      isLiked: post.isLiked == 0 ? false : true,
-                      likes: post.likes,
-                      comments: post.comments,
+                      isLiked: isLiked,
+                      likes: likes,
+                      comments: comments,
                       nameTag: post.author.nameTag,
                       postViewType: PostViewTypeEnum.fromPostDetails,
                     ),

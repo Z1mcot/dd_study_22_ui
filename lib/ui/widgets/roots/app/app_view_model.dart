@@ -2,6 +2,7 @@ import 'package:dd_study_22_ui/domain/enums/tab_items.dart';
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
+import 'package:dd_study_22_ui/ui/navigation/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,21 +14,12 @@ class AppViewModel extends ChangeNotifier {
 
   bool isBottomBarVisible = true;
 
-  final navigationKeys = {
-    TabItemEnum.home: GlobalKey<NavigatorState>(),
-    TabItemEnum.search: GlobalKey<NavigatorState>(),
-    TabItemEnum.newContent: GlobalKey<NavigatorState>(),
-    TabItemEnum.favourites: GlobalKey<NavigatorState>(),
-    TabItemEnum.profile: GlobalKey<NavigatorState>(),
-  };
-
   var _currentTab = TabEnums.defaultTab;
   TabItemEnum? previousTab;
   TabItemEnum get currentTab => _currentTab;
   void selectTab(TabItemEnum tabItemEnum) {
     if (tabItemEnum == _currentTab) {
-      navigationKeys[tabItemEnum]!
-          .currentState!
+      AppNavigator.navigationKeys[tabItemEnum]!.currentState!
           .popUntil((route) => route.isFirst);
     } else {
       previousTab = _currentTab;
@@ -50,6 +42,16 @@ class AppViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  String? _msg;
+  String? get msg => _msg;
+  set msg(String? val) {
+    _msg = val;
+    if (val != null) {
+      showSnackBar(val);
+    }
+    notifyListeners();
+  }
+
   void _asyncInit() async {
     user = await SharedPrefs.getStoredUser();
     if (user!.avatarLink != null) {
@@ -59,6 +61,11 @@ class AppViewModel extends ChangeNotifier {
       avatar = Image.memory(img.buffer.asUint8List(), fit: BoxFit.fill);
     }
     imagePaths = <String>[];
+  }
+
+  showSnackBar(String text) {
+    var sb = SnackBar(content: Text(text));
+    ScaffoldMessenger.of(context).showSnackBar(sb);
   }
 
   List<String>? _imagePaths;

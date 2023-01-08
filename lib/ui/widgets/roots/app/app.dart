@@ -1,4 +1,5 @@
 import 'package:dd_study_22_ui/domain/enums/tab_items.dart';
+import 'package:dd_study_22_ui/ui/navigation/app_navigator.dart';
 import 'package:dd_study_22_ui/ui/navigation/tab_navigator.dart';
 import 'package:dd_study_22_ui/ui/widgets/common/bottom_tabs.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
@@ -16,7 +17,7 @@ class App extends StatelessWidget {
         onTap: () => FocusScope.of(context).unfocus(),
         child: WillPopScope(
           onWillPop: () async {
-            var isFirstRouteInCurrentTab = await viewModel
+            var isFirstRouteInCurrentTab = await AppNavigator
                 .navigationKeys[viewModel.currentTab]!.currentState!
                 .maybePop();
 
@@ -58,7 +59,7 @@ class App extends StatelessWidget {
     return Offstage(
         offstage: viewModel.currentTab != tabItem,
         child: TabNavigator(
-          navigatorKey: viewModel.navigationKeys[tabItem]!,
+          navigatorKey: AppNavigator.navigationKeys[tabItem]!,
           tabItem: tabItem,
         ));
   }

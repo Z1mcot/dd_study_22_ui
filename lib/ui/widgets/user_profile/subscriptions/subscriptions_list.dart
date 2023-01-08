@@ -1,6 +1,5 @@
 import 'package:dd_study_22_ui/domain/enums/user_list_type.dart';
 import 'package:dd_study_22_ui/domain/navigator_arguments.dart/tab_navigatior_arguments.dart';
-import 'package:dd_study_22_ui/ui/widgets/user_profile/subscribers/subscribers_list_view_model.dart';
 import 'package:dd_study_22_ui/ui/widgets/user_profile/subscriptions/subscriptions_list_view_model.dart';
 import 'package:dd_study_22_ui/ui/widgets/users_list/users_list.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +42,7 @@ class SubscriptionsList extends StatelessWidget {
       userId = arg.userId;
     }
     return ChangeNotifierProvider(
-      create: (BuildContext context) => SubscribersListViewModel(
+      create: (BuildContext context) => SubscriptionsListViewModel(
           context: context, userId: userId ?? "", userListType: listType),
       child: const SubscriptionsList(),
     );

@@ -2,6 +2,7 @@ import 'package:dd_study_22_ui/domain/enums/user_list_type.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/ui/widgets/user_profile/subscribers/subscribers_list_view_model.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_search/search_view_model.dart';
+import 'package:dd_study_22_ui/ui/widgets/user_profile/subscriptions/subscriptions_list_view_model.dart';
 import 'package:dd_study_22_ui/ui/widgets/users_list/user_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,8 +22,10 @@ class UsersList extends StatelessWidget {
     UserListViewModel viewModel;
     if (userListType == UserListTypeEnum.searchList) {
       viewModel = context.read<SearchViewModel>();
-    } else {
+    } else if (userListType == UserListTypeEnum.subscribersList) {
       viewModel = context.read<SubscribersListViewModel>();
+    } else {
+      viewModel = context.read<SubscriptionsListViewModel>();
     }
 
     var users = viewModel.users;

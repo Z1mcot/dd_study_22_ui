@@ -1,3 +1,4 @@
+import 'package:dd_study_22_ui/domain/enums/tab_items.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/registration/sign_up.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/app/app.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/auth/auth.dart';
@@ -13,6 +14,14 @@ class NavigationRoute {
 
 class AppNavigator {
   static final key = GlobalKey<NavigatorState>();
+
+  static final navigationKeys = {
+    TabItemEnum.home: GlobalKey<NavigatorState>(),
+    TabItemEnum.search: GlobalKey<NavigatorState>(),
+    TabItemEnum.newContent: GlobalKey<NavigatorState>(),
+    TabItemEnum.favourites: GlobalKey<NavigatorState>(),
+    TabItemEnum.profile: GlobalKey<NavigatorState>(),
+  };
 
   static Future toLoader() async {
     return key.currentState
