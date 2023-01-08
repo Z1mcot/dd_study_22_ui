@@ -1,6 +1,6 @@
 import 'package:dd_study_22_ui/domain/enums/profile_types.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_profile/profile/self_profile_view_model.dart';
-import 'package:dd_study_22_ui/ui/widgets/common_user_profile/profile/profile.dart';
+import 'package:dd_study_22_ui/ui/widgets/user_profile/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,9 +11,15 @@ class SelfProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     var viewModel = context.watch<SelfProfileViewModel>();
 
+    int postsCount = viewModel.posts?.length ?? 0;
+    int subscribersCount = viewModel.user?.subscribersCount ?? 0;
+    int sunscriptionsCount = viewModel.user?.subscriptionsCount ?? 0;
+
     return Profile(
       profileType: ProfileTypeEnum.selfProfile,
-      viewModel: viewModel,
+      postsCount: postsCount,
+      subscribersCount: subscribersCount,
+      sunscriptionsCount: sunscriptionsCount,
     );
   }
 

@@ -1,37 +1,39 @@
 import 'package:dd_study_22_ui/domain/enums/profile_types.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_profile/profile/self_profile_view_model.dart';
-import 'package:dd_study_22_ui/ui/widgets/common_user_profile/profile_post_tile.dart';
-import 'package:dd_study_22_ui/ui/widgets/common_user_profile/profile/profile_view_model.dart';
-import 'package:dd_study_22_ui/ui/widgets/common_user_profile/user_info.dart';
-import 'package:dd_study_22_ui/ui/widgets/common_user_profile/user_metrics.dart';
+import 'package:dd_study_22_ui/ui/widgets/user_profile/profile_post_tile.dart';
+import 'package:dd_study_22_ui/ui/widgets/user_profile/profile/profile_view_model.dart';
+import 'package:dd_study_22_ui/ui/widgets/user_profile/user_info.dart';
+import 'package:dd_study_22_ui/ui/widgets/user_profile/user_metrics.dart';
 import 'package:dd_study_22_ui/ui/widgets/users_list/profile/user_profile_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatelessWidget {
   final ProfileTypeEnum profileType;
-  final ProfileViewModel viewModel;
-  // final List<PostModel>? posts;
+  final int postsCount;
+  final int subscribersCount;
+  final int sunscriptionsCount;
 
   const Profile({
     super.key,
     required this.profileType,
-    required this.viewModel,
+    required this.postsCount,
+    required this.subscribersCount,
+    required this.sunscriptionsCount,
   });
 
   @override
   Widget build(BuildContext context) {
-    // ProfileViewModel viewModel;
+    ProfileViewModel viewModel;
 
-    // if (profileType == ProfileTypeEnum.selfProfile) {
-    //   viewModel = context.read<SelfProfileViewModel>();
-    // } else {
-    //   viewModel = context.read<UserProfileViewModel>();
-    // }
+    if (profileType == ProfileTypeEnum.selfProfile) {
+      viewModel = context.read<SelfProfileViewModel>();
+    } else {
+      viewModel = context.read<UserProfileViewModel>();
+    }
 
     var user = viewModel.user;
     var size = MediaQuery.of(context).size;
-    var itemCount = viewModel.posts?.length;
 
     if (user != null) {
       return Scaffold(
@@ -61,10 +63,10 @@ class Profile extends StatelessWidget {
                     viewModel.getUserAvatar(),
                     UserMetrics(
                       userId: user.id,
-                      postsCount: user.postsCount,
-                      subscribersCount: user.subscribersCount,
+                      postsCount: postsCount,
+                      subscribersCount: subscribersCount,
                       toSubscribers: viewModel.toSubscribers,
-                      subscriptionsCount: user.subscriptionsCount,
+                      subscriptionsCount: sunscriptionsCount,
                       toSubscriptions: viewModel.toSubscriptions,
                     )
                   ],
@@ -114,11 +116,12 @@ class Profile extends StatelessWidget {
                         crossAxisSpacing: 20,
                         mainAxisSpacing: 20,
                       ),
-                      itemCount: itemCount,
+                      itemCount: postsCount,
                       itemBuilder: (_, gridIndex) {
                         Widget res;
+
                         var posts = viewModel.posts;
-                        if (posts != null && itemCount! > 0) {
+                        if (posts != null && postsCount > 0) {
                           var post = posts[gridIndex];
                           res = GestureDetector(
                             onTap: () => viewModel.toPostDetail(post.id),

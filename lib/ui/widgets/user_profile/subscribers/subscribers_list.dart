@@ -1,16 +1,16 @@
 import 'package:dd_study_22_ui/domain/enums/user_list_type.dart';
 import 'package:dd_study_22_ui/domain/navigator_arguments.dart/tab_navigatior_arguments.dart';
-import 'package:dd_study_22_ui/ui/widgets/common_user_profile/subs_list/subs_list_view_model.dart';
+import 'package:dd_study_22_ui/ui/widgets/user_profile/subscribers/subscribers_list_view_model.dart';
 import 'package:dd_study_22_ui/ui/widgets/users_list/users_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SubsList extends StatelessWidget {
-  const SubsList({super.key});
+class SubscribersList extends StatelessWidget {
+  const SubscribersList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var viewModel = context.watch<SubsListViewModel>();
+    var viewModel = context.watch<SubscribersListViewModel>();
     int? usersCount = viewModel.users?.length;
 
     return Scaffold(
@@ -27,7 +27,7 @@ class SubsList extends StatelessWidget {
                       children: [
                         UsersList(
                           usersCount: usersCount ?? 0,
-                          userListType: viewModel.listType,
+                          userListType: viewModel.userListType,
                         ),
                       ],
                     ),
@@ -42,9 +42,9 @@ class SubsList extends StatelessWidget {
       userId = arg.userId;
     }
     return ChangeNotifierProvider(
-      create: (BuildContext context) => SubsListViewModel(
-          context: context, userId: userId ?? "", listType: listType),
-      child: const SubsList(),
+      create: (BuildContext context) => SubscribersListViewModel(
+          context: context, userId: userId ?? "", userListType: listType),
+      child: const SubscribersList(),
     );
   }
 }

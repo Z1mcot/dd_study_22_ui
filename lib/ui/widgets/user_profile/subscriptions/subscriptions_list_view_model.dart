@@ -3,11 +3,13 @@ import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
 import 'package:dd_study_22_ui/ui/widgets/users_list/user_list_view_model.dart';
 
-class SubsListViewModel extends UserListViewModel {
+class SubscriptionsListViewModel extends UserListViewModel {
   final String userId;
-  final UserListTypeEnum listType;
-  SubsListViewModel(
-      {required super.context, required this.userId, required this.listType}) {
+  final UserListTypeEnum userListType;
+  SubscriptionsListViewModel(
+      {required super.context,
+      required this.userId,
+      required this.userListType}) {
     asyncInit();
 
     lvc.addListener(() async {
@@ -44,11 +46,7 @@ class SubsListViewModel extends UserListViewModel {
     if (!isLoading) {
       isLoading = true;
 
-      if (listType == UserListTypeEnum.subscribersList) {
-        users = await api.getSubscribers(userId: userId);
-      } else {
-        users = await api.getSubscribtions(userId: userId);
-      }
+      users = await api.getSubscribtions(userId: userId);
     }
 
     isLoading = false;
@@ -56,10 +54,6 @@ class SubsListViewModel extends UserListViewModel {
 
   @override
   void loadMoreUsers(int skip) async {
-    if (listType == UserListTypeEnum.subscribersList) {
-      newUsers = await api.getSubscribers(userId: userId, skip: skip);
-    } else {
-      newUsers = await api.getSubscribtions(userId: userId, skip: skip);
-    }
+    newUsers = await api.getSubscribtions(userId: userId, skip: skip);
   }
 }

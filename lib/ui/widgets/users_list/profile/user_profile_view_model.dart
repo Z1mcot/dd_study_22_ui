@@ -6,7 +6,7 @@ import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
 import 'package:dd_study_22_ui/ui/navigation/tab_navigator.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
-import 'package:dd_study_22_ui/ui/widgets/common_user_profile/profile/profile_view_model.dart';
+import 'package:dd_study_22_ui/ui/widgets/user_profile/profile/profile_view_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -14,7 +14,7 @@ import 'package:dd_study_22_ui/ui/navigation/app_navigator.dart';
 import 'package:dd_study_22_ui/ui/navigation/tab_navigator.dart';
 import 'package:dd_study_22_ui/ui/widgets/common/camera_widget.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
-import 'package:dd_study_22_ui/ui/widgets/common_user_profile/profile/profile_view_model.dart';
+import 'package:dd_study_22_ui/ui/widgets/user_profile/profile/profile_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
