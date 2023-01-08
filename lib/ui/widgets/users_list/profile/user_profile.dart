@@ -1,7 +1,7 @@
 import 'package:dd_study_22_ui/domain/enums/profile_types.dart';
 import 'package:dd_study_22_ui/domain/navigator_arguments.dart/tab_navigatior_arguments.dart';
-import 'package:dd_study_22_ui/ui/widgets/user_profile/profile.dart';
-import 'package:dd_study_22_ui/ui/widgets/tab_search/profile/user_profile_view_model.dart';
+import 'package:dd_study_22_ui/ui/widgets/common_user_profile/profile/profile.dart';
+import 'package:dd_study_22_ui/ui/widgets/users_list/profile/user_profile_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

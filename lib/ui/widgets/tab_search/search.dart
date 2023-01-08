@@ -1,5 +1,6 @@
-import 'package:dd_study_22_ui/internal/config/app_config.dart';
+import 'package:dd_study_22_ui/domain/enums/user_list_type.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_search/search_view_model.dart';
+import 'package:dd_study_22_ui/ui/widgets/users_list/users_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +10,7 @@ class Search extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var viewModel = context.watch<SearchViewModel>();
-    var usersCount = viewModel.foundUsers?.length;
+    var usersCount = viewModel.users?.length;
 
     return Scaffold(
       appBar: AppBar(
@@ -39,52 +40,16 @@ class Search extends StatelessWidget {
         child: Container(
           child: viewModel.isLoading
               ? const Center(child: CircularProgressIndicator())
-              : viewModel.foundUsers == null
+              : viewModel.users == null
                   ? const Center(
                       child: Text("Time to meet new users..."),
                     )
                   : Column(
                       children: [
-                        Expanded(
-                          child: ListView.separated(
-                              itemBuilder: (_, listIndex) {
-                                Widget res;
-                                var users = viewModel.foundUsers;
-                                if (users != null) {
-                                  var user = users[listIndex];
-                                  res = GestureDetector(
-                                    onTap: () =>
-                                        viewModel.toUserProfile(user.id),
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      child: Row(children: [
-                                        CircleAvatar(
-                                          foregroundImage: NetworkImage(
-                                              "$baseUrl${user.avatarLink}",
-                                              headers: viewModel.headers),
-                                        ),
-                                        Column(
-                                          children: [
-                                            Text(user.nameTag),
-                                            Text(
-                                              user.name,
-                                              style: const TextStyle(
-                                                  color: Colors.grey),
-                                            ),
-                                          ],
-                                        )
-                                      ]),
-                                    ),
-                                  );
-                                } else {
-                                  res = const SizedBox.shrink();
-                                }
-                                return res;
-                              },
-                              separatorBuilder: (_, __) => const Divider(),
-                              itemCount: usersCount ?? 0),
-                        )
+                        UsersList(
+                          usersCount: usersCount ?? 0,
+                          userListType: UserListTypeEnum.searchList,
+                        ),
                       ],
                     ),
         ),

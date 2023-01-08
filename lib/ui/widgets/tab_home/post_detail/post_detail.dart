@@ -21,7 +21,7 @@ class PostDetail extends StatelessWidget {
         appBar: AppBar(),
         body: NestedScrollView(
           physics: const NeverScrollableScrollPhysics(),
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
+          headerSliverBuilder: (_, __) {
             return [
               SliverAppBar(
                 automaticallyImplyLeading: false,

@@ -16,6 +16,7 @@ class User implements DbModel {
   final int subscriptionsCount;
   final int subscribersCount;
   final int postsCount;
+  final int isPrivate;
 
   User({
     required this.id,
@@ -27,6 +28,7 @@ class User implements DbModel {
     required this.subscriptionsCount,
     required this.subscribersCount,
     required this.postsCount,
+    required this.isPrivate,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -52,7 +54,8 @@ class User implements DbModel {
         other.birthDate == birthDate &&
         other.subscriptionsCount == subscriptionsCount &&
         other.subscribersCount == subscribersCount &&
-        other.postsCount == postsCount;
+        other.postsCount == postsCount &&
+        other.isPrivate == isPrivate;
   }
 
   @override
@@ -65,6 +68,7 @@ class User implements DbModel {
         birthDate.hashCode ^
         subscriptionsCount.hashCode ^
         subscribersCount.hashCode ^
-        postsCount.hashCode;
+        postsCount.hashCode ^
+        isPrivate.hashCode;
   }
 }

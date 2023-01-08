@@ -1,39 +1,26 @@
 import 'dart:io';
 
 import 'package:dd_study_22_ui/data/services/auth_service.dart';
-import 'package:dd_study_22_ui/data/services/data_service.dart';
 import 'package:dd_study_22_ui/data/services/database.dart';
 import 'package:dd_study_22_ui/data/services/sync_service.dart';
 import 'package:dd_study_22_ui/domain/models/post/post.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
-
 import 'package:dd_study_22_ui/domain/models/post/post_content.dart';
-
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:dd_study_22_ui/domain/navigator_arguments.dart/tab_navigatior_arguments.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
-import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
 import 'package:dd_study_22_ui/ui/navigation/app_navigator.dart';
 import 'package:dd_study_22_ui/ui/navigation/tab_navigator.dart';
 import 'package:dd_study_22_ui/ui/widgets/common/camera_widget.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
-import 'package:dd_study_22_ui/ui/widgets/user_profile/profile_view_model.dart';
+import 'package:dd_study_22_ui/ui/widgets/common_user_profile/profile/profile_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class SelfProfileViewModel extends ProfileViewModel {
   final _authService = AuthService();
-  final _api = RepositoryModule.apiRepository();
-  final _dataService = DataService();
-
-  bool _isLoading = false;
-  bool get isLoading => _isLoading;
-  set isLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
-  }
 
   SelfProfileViewModel({required super.context}) {
     asyncInit();
@@ -49,7 +36,7 @@ class SelfProfileViewModel extends ProfileViewModel {
             (value) async {
               var postCount = posts!.length;
               var newPosts =
-                  await _dataService.getUserPosts(user!.id, skip: postCount);
+                  await dataService.getUserPosts(user!.id, skip: postCount);
               posts = <PostModel>[...posts!, ...newPosts];
               isLoading = false;
             },
@@ -57,6 +44,10 @@ class SelfProfileViewModel extends ProfileViewModel {
         }
       }
     });
+
+    buttonBackgroundColor = Colors.grey[200];
+    buttonTextColor = Colors.black;
+    buttonMsg = "Edit profile";
 
     var appViewModel = context.read<AppViewModel>();
     appViewModel.addListener(() {
@@ -69,7 +60,7 @@ class SelfProfileViewModel extends ProfileViewModel {
     user = await SharedPrefs.getStoredUser();
 
     await SyncService().syncUserPosts(user!.id);
-    posts = await _dataService.getUserPosts(user!.id);
+    posts = await dataService.getUserPosts(user!.id);
   }
 
   String? _imagePath;
@@ -93,9 +84,9 @@ class SelfProfileViewModel extends ProfileViewModel {
     ));
     if (_imagePath != null) {
       avatar = null;
-      var t = await _api.uploadFiles(files: [File(_imagePath!)]);
+      var t = await api.uploadFiles(files: [File(_imagePath!)]);
       if (t.isNotEmpty) {
-        await _api.addAvatarToUser(t.first);
+        await api.addAvatarToUser(t.first);
 
         var img =
             await NetworkAssetBundle(Uri.parse("$baseUrl${user!.avatarLink}"))
@@ -142,5 +133,22 @@ class SelfProfileViewModel extends ProfileViewModel {
   Future refreshView() async {
     asyncInit();
     notifyListeners();
+  }
+
+  @override
+  void onProfileInfoButtonTap() {
+    Navigator.of(context).pushNamed(TabNavigatorRoutes.editProfile);
+  }
+
+  @override
+  void toSubscribers() {
+    Navigator.of(context).pushNamed(TabNavigatorRoutes.userSubscribers,
+        arguments: TabNavigatiorArguments(userId: user!.id));
+  }
+
+  @override
+  void toSubscriptions() {
+    Navigator.of(context).pushNamed(TabNavigatorRoutes.userSubscriptions,
+        arguments: TabNavigatiorArguments(userId: user!.id));
   }
 }

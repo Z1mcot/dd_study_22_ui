@@ -1,22 +1,34 @@
 import 'package:dd_study_22_ui/domain/exceptions/exceptions.dart';
-import 'package:dd_study_22_ui/domain/models/user/sign_up_user_model.dart';
-import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
-import 'package:dd_study_22_ui/ui/widgets/roots/registration/sign_up_view_model_state.dart';
+import 'package:dd_study_22_ui/domain/models/user/modify_user_info_model.dart';
+import 'package:dd_study_22_ui/domain/models/user/user.dart';
+import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
+import 'package:dd_study_22_ui/ui/widgets/tab_profile/modify_profile/info_edit/info_edit_view_model_state.dart';
 import 'package:flutter/material.dart';
 
-class SignUpViewModel extends ChangeNotifier {
+import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
+
+class InfoEditViewModel extends ChangeNotifier {
   var nameTec = TextEditingController();
   var nameTagTec = TextEditingController();
   var emailTec = TextEditingController();
-  var passwTec = TextEditingController();
-  var retrypasswTec = TextEditingController();
   var dateInputTec = TextEditingController();
 
   final _api = RepositoryModule.apiRepository();
 
   BuildContext context;
 
-  SignUpViewModel({required this.context}) {
+  InfoEditState _state = InfoEditState();
+
+  InfoEditState get state => _state;
+  set state(InfoEditState value) {
+    _state = value;
+    notifyListeners();
+  }
+
+  InfoEditViewModel({
+    required this.context,
+  }) {
+    _asyncInit();
     nameTec.addListener(() {
       state = state.copyWith(name: nameTec.text);
     });
@@ -26,12 +38,6 @@ class SignUpViewModel extends ChangeNotifier {
     emailTec.addListener(() {
       state = state.copyWith(email: emailTec.text);
     });
-    passwTec.addListener(() {
-      state = state.copyWith(password: passwTec.text);
-    });
-    retrypasswTec.addListener(() {
-      state = state.copyWith(retryPassword: retrypasswTec.text);
-    });
     dateInputTec.addListener(() {
       state = state.copyWith(
           birthDate: dateInputTec.text.isNotEmpty
@@ -40,36 +46,36 @@ class SignUpViewModel extends ChangeNotifier {
     });
   }
 
-  SignUpViewModelState _state = SignUpViewModelState();
+  bool checkFields() {
+    return (state.name?.isNotEmpty ?? false) ||
+        (state.nameTag?.isNotEmpty ?? false) ||
+        (state.email?.isNotEmpty ?? false) ||
+        (state.birthDate != null);
+  }
 
-  SignUpViewModelState get state => _state;
-  set state(SignUpViewModelState value) {
-    _state = value;
+  User? _user;
+  User? get user => _user;
+  set user(User? value) {
+    _user = value;
     notifyListeners();
   }
 
-  bool checkFields() {
-    return (state.name?.isNotEmpty ?? false) &&
-        (state.nameTag?.isNotEmpty ?? false) &&
-        (state.email?.isNotEmpty ?? false) &&
-        (state.password?.isNotEmpty ?? false) &&
-        (state.retryPassword?.isNotEmpty ?? false) &&
-        (state.password == state.retryPassword);
+  void _asyncInit() async {
+    user = await SharedPrefs.getStoredUser();
   }
 
-  void register() async {
-    state.copyWith(isLoading: true);
-    var model = RegisterUserModel(
+  void confirmChange() async {
+    state = state.copyWith(isLoading: true);
+    var model = ModifyUserInfoModel(
       name: state.name,
       nameTag: state.nameTag,
       email: state.email,
-      password: state.password,
-      retryPassword: state.retryPassword,
       birthDate: state.birthDate,
     );
+    if (user != null) model = model.copyWith(id: user!.id);
 
     try {
-      await _api.signUpUser(model).then((value) {
+      await _api.modifyUserInfo(model).then((value) {
         Navigator.of(context).pop();
       });
     } on NoNetworkException {

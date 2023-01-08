@@ -1,40 +1,32 @@
-class SignUpViewModelState {
-  final String? name;
+class InfoEditState {
   final String? nameTag;
+  final String? name;
   final String? email;
-  final String? password;
-  final String? retryPassword;
   final DateTime? birthDate;
+
   final bool isLoading;
   final String? errorText;
-
-  SignUpViewModelState({
+  InfoEditState({
     this.name,
     this.nameTag,
     this.email,
-    this.password,
-    this.retryPassword,
     this.birthDate,
     this.isLoading = false,
     this.errorText,
   });
 
-  SignUpViewModelState copyWith({
-    String? name,
+  InfoEditState copyWith({
     String? nameTag,
+    String? name,
     String? email,
-    String? password,
-    String? retryPassword,
     DateTime? birthDate,
     bool? isLoading,
     String? errorText,
   }) {
-    return SignUpViewModelState(
-      name: name ?? this.name,
+    return InfoEditState(
       nameTag: nameTag ?? this.nameTag,
+      name: name ?? this.name,
       email: email ?? this.email,
-      password: password ?? this.password,
-      retryPassword: retryPassword ?? this.retryPassword,
       birthDate: birthDate ?? this.birthDate,
       isLoading: isLoading ?? this.isLoading,
       errorText: errorText ?? this.errorText,

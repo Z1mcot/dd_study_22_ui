@@ -8,6 +8,7 @@ CREATE TABLE t_User (
   ,subscriptionsCount     INTEGER
   ,subscribersCount       INTEGER
   ,postsCount             INTEGER
+  ,isPrivate              INTEGER
 );
 CREATE TABLE t_SimpleUser (
   id                      TEXT NOT NULL PRIMARY KEY

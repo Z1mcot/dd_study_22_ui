@@ -9,10 +9,14 @@ import 'package:dd_study_22_ui/domain/models/comment/add_comment.dart';
 import 'package:dd_study_22_ui/domain/models/post/create_post_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_like.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
+import 'package:dd_study_22_ui/domain/models/session/user_session.dart';
+import 'package:dd_study_22_ui/domain/models/subscription/subscribe_model.dart';
 import 'package:dd_study_22_ui/domain/models/token/refresh_token_request.dart';
 import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
 import 'package:dd_study_22_ui/domain/models/token/token_request.dart';
 import 'package:dd_study_22_ui/domain/models/token/token_response.dart';
+import 'package:dd_study_22_ui/domain/models/user/change_user_password_model.dart';
+import 'package:dd_study_22_ui/domain/models/user/modify_user_info_model.dart';
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:dd_study_22_ui/domain/models/user/sign_up_user_model.dart';
 import 'package:dd_study_22_ui/domain/repository/api_repository.dart';
@@ -54,6 +58,31 @@ class ApiDataRepository extends ApiRepository {
           {required String nameTag, int skip = 0, int take = 10}) =>
       _api.searchUsers(nameTag, skip, take);
 
+  @override
+  Future changePassword(ChangeUserPasswordModel model) =>
+      _api.changePassword(model);
+
+  @override
+  Future modifyUserInfo(ModifyUserInfoModel model) =>
+      _api.modifyUserInfo(model);
+
+  // Subscriptions
+  @override
+  Future subscribeToUser(SubscribeModel model) => _api.subscribeToUser(model);
+
+  @override
+  Future<List<SimpleUser>> getSubscribers(
+          {required String userId, int skip = 0, int take = 10}) =>
+      _api.getSubscribers(userId, skip, take);
+
+  @override
+  Future<List<SimpleUser>> getSubscribtions(
+          {required String userId, int skip = 0, int take = 10}) =>
+      _api.getSubscribtions(userId, skip, take);
+
+  @override
+  Future confirmSubscription(String userId) => _api.confirmSubscription(userId);
+
   // Posts
   @override
   Future<List<PostModel>> getPosts(int skip, int take) =>
@@ -66,6 +95,9 @@ class ApiDataRepository extends ApiRepository {
   @override
   Future createPost(CreatePostModel model) => _api.createPost(model);
 
+  @override
+  Future deletePost(String postId) => _api.deletePost(postId);
+
   // Attachments
   @override
   Future<List<AttachMeta>> uploadFiles({required List<File> files}) =>
@@ -76,12 +108,15 @@ class ApiDataRepository extends ApiRepository {
 
   // Comments
   @override
-  Future addComment(AddCommentModel model) => _api.addComment(model);
-
-  @override
   Future<List<CommentModel>> getPostComments(
           String postId, int skip, int take) =>
       _api.getPostComments(postId, skip, take);
+
+  @override
+  Future addComment(AddCommentModel model) => _api.addComment(model);
+
+  @override
+  Future deleteComment(String commentId) => _api.deleteComment(commentId);
 
   // Likes
   @override
@@ -89,4 +124,12 @@ class ApiDataRepository extends ApiRepository {
 
   @override
   Future likePost(PostLikeModel model) => _api.likePost(model);
+
+  // Sessions
+  @override
+  Future<List<UserSession>> getSessions() => _api.getSessions();
+
+  @override
+  Future deactivateSession(String refreshToken) =>
+      _api.deactivateSession(refreshToken);
 }

@@ -7,8 +7,12 @@ import 'package:dd_study_22_ui/domain/models/comment/comment_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/create_post_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_like.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
+import 'package:dd_study_22_ui/domain/models/session/user_session.dart';
 import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
+import 'package:dd_study_22_ui/domain/models/subscription/subscribe_model.dart';
 import 'package:dd_study_22_ui/domain/models/token/token_response.dart';
+import 'package:dd_study_22_ui/domain/models/user/change_user_password_model.dart';
+import 'package:dd_study_22_ui/domain/models/user/modify_user_info_model.dart';
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:dd_study_22_ui/domain/models/user/sign_up_user_model.dart';
 
@@ -29,6 +33,21 @@ abstract class ApiRepository {
   Future<List<SimpleUser>> searchUsers(
       {required String nameTag, int skip = 0, int take = 10});
 
+  Future changePassword(ChangeUserPasswordModel model);
+
+  Future modifyUserInfo(ModifyUserInfoModel model);
+
+  // Subscriptions
+  Future subscribeToUser(SubscribeModel model);
+
+  Future<List<SimpleUser>> getSubscribers(
+      {required String userId, int skip = 0, int take = 10});
+
+  Future<List<SimpleUser>> getSubscribtions(
+      {required String userId, int skip = 0, int take = 10});
+
+  Future confirmSubscription(String userId);
+
   // Posts
   Future<List<PostModel>> getPosts(int skip, int take);
 
@@ -36,18 +55,27 @@ abstract class ApiRepository {
 
   Future createPost(CreatePostModel model);
 
+  Future deletePost(String postId);
+
   // Attachments
   Future<List<AttachMeta>> uploadFiles({required List<File> files});
 
   Future addAvatarToUser(AttachMeta model);
 
   // Comments
+  Future<List<CommentModel>> getPostComments(String postId, int skip, int take);
+
   Future addComment(AddCommentModel model);
 
-  Future<List<CommentModel>> getPostComments(String postId, int skip, int take);
+  Future deleteComment(String commentId);
 
   // Likes
   Future likePost(PostLikeModel model);
 
   Future likeComment(CommentLikeModel model);
+
+  // Sessions
+  Future<List<UserSession>> getSessions();
+
+  Future deactivateSession(String refreshToken);
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:dd_study_22_ui/data/services/data_service.dart';
+import 'package:dd_study_22_ui/domain/exceptions/exceptions.dart';
 import 'package:dd_study_22_ui/domain/repository/api_repository.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
@@ -58,9 +59,3 @@ class AuthService {
     await TokenStorage.setStoredToken(null);
   }
 }
-
-class WrongCredentialsException implements Exception {}
-
-class NoNetworkException implements Exception {}
-
-class ServerSideException implements Exception {}

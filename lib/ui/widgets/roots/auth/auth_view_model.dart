@@ -1,4 +1,5 @@
 import 'package:dd_study_22_ui/data/services/auth_service.dart';
+import 'package:dd_study_22_ui/domain/exceptions/exceptions.dart';
 import 'package:dd_study_22_ui/ui/navigation/app_navigator.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/auth/auth_view_model_state.dart';
 import 'package:flutter/material.dart';

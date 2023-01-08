@@ -1,4 +1,3 @@
-import 'package:dd_study_22_ui/ui/navigation/tab_navigator.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_create/create_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,8 +17,7 @@ class CreateWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(
-                onTap: () =>
-                    viewModel.toContentCreation(TabNavigatorRoutes.createPost),
+                onTap: viewModel.toPostCreation,
                 child: Container(
                   height: 200,
                   color: Colors.grey[300],
@@ -36,6 +34,7 @@ class CreateWidget extends StatelessWidget {
                 ),
               ),
               GestureDetector(
+                onTap: viewModel.toStoriesCreation,
                 child: Container(
                   height: 200,
                   color: Colors.grey[300],
