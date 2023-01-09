@@ -3,9 +3,12 @@ import 'dart:io';
 import 'package:dd_study_22_ui/data/services/auth_service.dart';
 import 'package:dd_study_22_ui/data/services/database.dart';
 import 'package:dd_study_22_ui/data/services/sync_service.dart';
+import 'package:dd_study_22_ui/domain/models/comment/post_comment.dart';
+import 'package:dd_study_22_ui/domain/models/notification/notification_db.dart';
 import 'package:dd_study_22_ui/domain/models/post/post.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_content.dart';
+import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:dd_study_22_ui/domain/navigator_arguments.dart/tab_navigatior_arguments.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
@@ -102,6 +105,10 @@ class SelfProfileViewModel extends ProfileViewModel {
     await DB.instance.cleanTable<User>();
     await DB.instance.cleanTable<Post>();
     await DB.instance.cleanTable<PostContent>();
+    await DB.instance.cleanTable<SimpleUser>();
+    await DB.instance.cleanTable<PostComment>();
+    await DB.instance.cleanTable<NotificationDb>();
+
     await _authService.logout().then((value) => AppNavigator.toLoader());
   }
 

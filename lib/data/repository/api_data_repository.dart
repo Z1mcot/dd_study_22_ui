@@ -74,6 +74,10 @@ class ApiDataRepository extends ApiRepository {
   Future subscribeToUser(SubscribeModel model) => _api.subscribeToUser(model);
 
   @override
+  Future unsubscribeFromUser(SubscribeModel model) =>
+      _api.unsubscribeFromUser(model);
+
+  @override
   Future<List<SimpleUser>> getSubscribers(
           {required String userId, int skip = 0, int take = 10}) =>
       _api.getSubscribers(userId, skip, take);

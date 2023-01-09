@@ -43,6 +43,8 @@ abstract class ApiRepository {
   // Subscriptions
   Future subscribeToUser(SubscribeModel model);
 
+  Future unsubscribeFromUser(SubscribeModel model);
+
   Future<List<SimpleUser>> getSubscribers(
       {required String userId, int skip = 0, int take = 10});
 

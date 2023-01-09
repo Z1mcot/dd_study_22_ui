@@ -9,6 +9,7 @@ CREATE TABLE t_User (
   ,subscribersCount       INTEGER
   ,postsCount             INTEGER
   ,isPrivate              INTEGER
+  ,isFollowed             INTEGER
 );
 CREATE TABLE t_SimpleUser (
   id                      TEXT NOT NULL PRIMARY KEY

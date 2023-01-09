@@ -46,6 +46,9 @@ abstract class ApiClient {
   @POST("/api/Subscription/SubscribeToUser")
   Future subscribeToUser(@Body() SubscribeModel model);
 
+  @POST("/api/Subscription/UnsubscribeFromUser")
+  Future unsubscribeFromUser(@Body() SubscribeModel model);
+
   @GET("/api/Subscription/GetUserSubscribers")
   Future<List<SimpleUser>> getSubscribers(@Query("userId") String userId,
       @Query("skip") int skip, @Query("take") int take);

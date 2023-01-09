@@ -56,7 +56,7 @@ class Notifies extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(
-                                width: 200,
+                                width: 220,
                                 child: Text(
                                   notify.description,
                                   softWrap: true,

@@ -34,7 +34,7 @@ class CreateWidget extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: viewModel.toStoriesCreation,
+                onTap: () {},
                 child: Container(
                   height: 200,
                   color: Colors.grey[300],
@@ -46,6 +46,7 @@ class CreateWidget extends StatelessWidget {
                         size: 28,
                       ),
                       Text("Add stories", style: TextStyle(fontSize: 16)),
+                      Text("В перспективе"),
                     ],
                   ),
                 ),

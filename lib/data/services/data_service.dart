@@ -16,6 +16,13 @@ class DataService {
     await DB.instance.createUpdate(user);
   }
 
+  Future createUpdatePost(PostModel postModel) async {
+    var post = Post.fromJson(postModel.toJson())
+        .copyWith(authorId: postModel.author.id);
+
+    DB.instance.createUpdate<Post>(post);
+  }
+
   Future rangeUpdateEntities<T extends DbModel>(Iterable<T> elements) async {
     await DB.instance.createUpdateRange(elements);
   }

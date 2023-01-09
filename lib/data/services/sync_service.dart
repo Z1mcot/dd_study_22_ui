@@ -2,6 +2,7 @@ import 'package:dd_study_22_ui/data/services/data_service.dart';
 import 'package:dd_study_22_ui/domain/models/comment/post_comment.dart';
 import 'package:dd_study_22_ui/domain/models/notification/notification_db.dart';
 import 'package:dd_study_22_ui/domain/models/post/post.dart';
+import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
 import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
 
 class SyncService {
@@ -67,8 +68,16 @@ class SyncService {
     var posts = <Post>[];
     for (var notify in notifyModels) {
       if (notify.postId != null) {
-        var post = await _dataService.getPostById(notify.postId!);
-        posts.add(Post.fromJson(post!.toJson()));
+        PostModel? post;
+
+        try {
+          post = await _dataService.getPostById(notify.postId!);
+        } catch (e) {
+          post = await _api.getPostById(notify.postId!);
+          _dataService.createUpdatePost(post);
+        } finally {
+          posts.add(Post.fromJson(post!.toJson()));
+        }
       }
     }
 

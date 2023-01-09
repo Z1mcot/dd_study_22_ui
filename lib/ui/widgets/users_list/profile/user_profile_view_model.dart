@@ -122,18 +122,32 @@ class UserProfileViewModel extends ProfileViewModel {
 
   @override
   void onProfileInfoButtonTap() async {
+    String alertBody;
     if (user != null) {
       var model = SubscribeModel(authorId: user!.id);
-      await api.subscribeToUser(model);
 
-      if (user!.isPrivate == 1) {
+      if (user!.isFollowed == 1) {
+        await api.unsubscribeFromUser(model);
+        alertBody = "started following you";
+
+        buttonMsg = "Follow";
+        buttonBackgroundColor = Colors.grey[200];
+        buttonTextColor = Colors.black;
+      } else {
+        await api.subscribeToUser(model);
+        alertBody = "unfollowed you";
+
         buttonBackgroundColor = Colors.black;
         buttonTextColor = Colors.white;
-        buttonMsg = "Request sent";
+        if (user!.isPrivate == 1) {
+          buttonMsg = "Request sent";
+        } else {
+          buttonMsg = "Following";
+        }
       }
-    }
 
-    _sendPush("new follower", "just started following you");
+      _sendPush("new follower", alertBody);
+    }
   }
 
   _sendPush(String subtitle, String body) async {
