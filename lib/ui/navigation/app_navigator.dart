@@ -19,7 +19,7 @@ class AppNavigator {
     TabItemEnum.home: GlobalKey<NavigatorState>(),
     TabItemEnum.search: GlobalKey<NavigatorState>(),
     TabItemEnum.newContent: GlobalKey<NavigatorState>(),
-    TabItemEnum.favourites: GlobalKey<NavigatorState>(),
+    TabItemEnum.notifications: GlobalKey<NavigatorState>(),
     TabItemEnum.profile: GlobalKey<NavigatorState>(),
   };
 

@@ -1,5 +1,6 @@
 import 'package:dd_study_22_ui/domain/db_model.dart';
 import 'package:dd_study_22_ui/domain/models/comment/post_comment.dart';
+import 'package:dd_study_22_ui/domain/models/notification/notification_db.dart';
 import 'package:dd_study_22_ui/domain/models/post/post.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_content.dart';
 import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
@@ -18,7 +19,7 @@ class DB {
   Future init() async {
     if (!_isInitialized) {
       var databasePath = await getDatabasesPath();
-      var path = join(databasePath, "db_v1.0.9.db");
+      var path = join(databasePath, "db_v1.1.1.db");
 
       _db = await openDatabase(path, version: 1, onCreate: _createDB);
       _isInitialized = true;
@@ -41,6 +42,7 @@ class DB {
     PostContent: (map) => PostContent.fromMap(map),
     SimpleUser: (map) => SimpleUser.fromMap(map),
     PostComment: (map) => PostComment.fromMap(map),
+    NotificationDb: (map) => NotificationDb.fromMap(map),
   };
 
   String _dbName(Type type) {

@@ -68,6 +68,13 @@ class AppViewModel extends ChangeNotifier {
     ScaffoldMessenger.of(context).showSnackBar(sb);
   }
 
+  int? _notificationCounter;
+  int? get notificationCounter => _notificationCounter;
+  set notificationCounter(int? value) {
+    _notificationCounter = value;
+    notifyListeners();
+  }
+
   List<String>? _imagePaths;
   List<String>? get imagePaths => _imagePaths;
   set imagePaths(List<String>? value) {

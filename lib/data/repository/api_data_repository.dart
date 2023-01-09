@@ -6,11 +6,14 @@ import 'package:dd_study_22_ui/domain/models/attachment/attach_meta.dart';
 import 'package:dd_study_22_ui/domain/models/comment/comment_model.dart';
 import 'package:dd_study_22_ui/domain/models/comment/comment_like.dart';
 import 'package:dd_study_22_ui/domain/models/comment/add_comment.dart';
+import 'package:dd_study_22_ui/domain/models/notification/notification_model.dart';
+import 'package:dd_study_22_ui/domain/models/notification/send_notification_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/create_post_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_like.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/session/user_session.dart';
 import 'package:dd_study_22_ui/domain/models/subscription/subscribe_model.dart';
+import 'package:dd_study_22_ui/domain/models/token/push_token.dart';
 import 'package:dd_study_22_ui/domain/models/token/refresh_token_request.dart';
 import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
 import 'package:dd_study_22_ui/domain/models/token/token_request.dart';
@@ -93,6 +96,9 @@ class ApiDataRepository extends ApiRepository {
       _api.getUserPosts(userId, skip, take);
 
   @override
+  Future<PostModel> getPostById(String postId) => _api.getPostById(postId);
+
+  @override
   Future createPost(CreatePostModel model) => _api.createPost(model);
 
   @override
@@ -132,4 +138,23 @@ class ApiDataRepository extends ApiRepository {
   @override
   Future deactivateSession(String refreshToken) =>
       _api.deactivateSession(refreshToken);
+
+  // pushes
+  @override
+  Future subscribeToNotifications(PushToken model) =>
+      _api.subscribeToNotifications(model);
+
+  @override
+  Future unsubscribeFromNotifications() => _api.unsubscribeFromNotifications();
+
+  @override
+  Future sendPush(
+          String notifyType, String? postId, SendNotificationModel model) =>
+      _api.sendPush(notifyType, postId, model);
+
+  // notifications
+  @override
+  Future<List<NotificationModel>> getNotifications(
+          {int skip = 0, int take = 10}) =>
+      _api.getNotifications(skip, take);
 }

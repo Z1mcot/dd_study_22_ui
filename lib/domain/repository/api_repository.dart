@@ -4,12 +4,15 @@ import 'package:dd_study_22_ui/domain/models/attachment/attach_meta.dart';
 import 'package:dd_study_22_ui/domain/models/comment/add_comment.dart';
 import 'package:dd_study_22_ui/domain/models/comment/comment_like.dart';
 import 'package:dd_study_22_ui/domain/models/comment/comment_model.dart';
+import 'package:dd_study_22_ui/domain/models/notification/notification_model.dart';
+import 'package:dd_study_22_ui/domain/models/notification/send_notification_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/create_post_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_like.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/session/user_session.dart';
 import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
 import 'package:dd_study_22_ui/domain/models/subscription/subscribe_model.dart';
+import 'package:dd_study_22_ui/domain/models/token/push_token.dart';
 import 'package:dd_study_22_ui/domain/models/token/token_response.dart';
 import 'package:dd_study_22_ui/domain/models/user/change_user_password_model.dart';
 import 'package:dd_study_22_ui/domain/models/user/modify_user_info_model.dart';
@@ -53,6 +56,8 @@ abstract class ApiRepository {
 
   Future<List<PostModel>> getUserPosts(String userId, int skip, int take);
 
+  Future<PostModel> getPostById(String postId);
+
   Future createPost(CreatePostModel model);
 
   Future deletePost(String postId);
@@ -78,4 +83,16 @@ abstract class ApiRepository {
   Future<List<UserSession>> getSessions();
 
   Future deactivateSession(String refreshToken);
+
+  // Pushes
+  Future subscribeToNotifications(PushToken model);
+
+  Future unsubscribeFromNotifications();
+
+  Future sendPush(
+      String notifyType, String? postId, SendNotificationModel model);
+
+  // Notifications
+  Future<List<NotificationModel>> getNotifications(
+      {int skip = 0, int take = 10});
 }

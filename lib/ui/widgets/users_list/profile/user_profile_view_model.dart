@@ -1,8 +1,10 @@
 import 'package:dd_study_22_ui/data/services/sync_service.dart';
+import 'package:dd_study_22_ui/domain/models/notification/send_notification_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/subscription/subscribe_model.dart';
 import 'package:dd_study_22_ui/domain/navigator_arguments.dart/tab_navigatior_arguments.dart';
 import 'package:dd_study_22_ui/internal/config/app_config.dart';
+import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
 import 'package:dd_study_22_ui/internal/config/token_storage.dart';
 import 'package:dd_study_22_ui/ui/navigation/tab_navigator.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
@@ -130,5 +132,18 @@ class UserProfileViewModel extends ProfileViewModel {
         buttonMsg = "Request sent";
       }
     }
+
+    _sendPush("new follower", "just started following you");
+  }
+
+  _sendPush(String subtitle, String body) async {
+    var sender = await SharedPrefs.getStoredUser();
+
+    var alertModel = Alert(
+        title: user!.name, subtitle: subtitle, body: "${user!.nameTag} $body");
+    var pushModel = Push(alert: alertModel);
+    var sendPushModel =
+        SendNotificationModel(userId: sender!.id, push: pushModel);
+    await api.sendPush("sub", null, sendPushModel);
   }
 }

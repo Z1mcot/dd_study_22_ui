@@ -2,6 +2,8 @@ import 'package:dd_study_22_ui/data/services/database.dart';
 import 'package:dd_study_22_ui/domain/db_model.dart';
 import 'package:dd_study_22_ui/domain/models/comment/comment_model.dart';
 import 'package:dd_study_22_ui/domain/models/comment/post_comment.dart';
+import 'package:dd_study_22_ui/domain/models/notification/notification_db.dart';
+import 'package:dd_study_22_ui/domain/models/notification/notification_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/post.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_content.dart';
@@ -108,6 +110,37 @@ class DataService {
           isLiked: post.isLiked,
           isModified: post.isModified,
         ));
+      }
+    }
+
+    return res;
+  }
+
+  Future<List<NotificationModel>> getNotifications({
+    int skip = 0,
+    int take = 10,
+  }) async {
+    var res = <NotificationModel>[];
+    var notifies =
+        await DB.instance.getAll<NotificationDb>(skip: skip, take: take);
+
+    for (var notify in notifies) {
+      var sender = await DB.instance.get<SimpleUser>(notify.senderId);
+
+      if (sender != null) {
+        var model = NotificationModel(
+          id: notify.id,
+          sender: sender,
+          description: notify.description,
+          notifyDate: notify.notifyDate,
+          postId: notify.postId,
+        );
+        if (model.postId != null) {
+          var post = await getPostById(model.postId!);
+          model = model.copyWith(post: post);
+        }
+
+        res.add(model);
       }
     }
 

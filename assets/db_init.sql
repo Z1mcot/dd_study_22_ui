@@ -46,3 +46,12 @@ CREATE TABLE t_PostComment (
   ,FOREIGN KEY(authorId) REFERENCES t_SimpleUser(id)
   ,FOREIGN KEY(postId) REFERENCES t_Post(id)
 );
+CREATE TABLE t_NotificationDb (
+  id                      TEXT NOT NULL PRIMARY KEY
+  ,senderId               TEXT NOT NULL
+  ,postId                 TEXT
+  ,[description]          TEXT
+  ,notifyDate             TEXT
+  ,FOREIGN KEY(senderId) REFERENCES t_SimpleUser(id)
+  ,FOREIGN KEY(postId) REFERENCES t_Post(id)
+);

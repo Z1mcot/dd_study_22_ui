@@ -2,6 +2,7 @@ import 'package:dd_study_22_ui/data/services/data_service.dart';
 import 'package:dd_study_22_ui/data/services/sync_service.dart';
 import 'package:dd_study_22_ui/domain/models/comment/add_comment.dart';
 import 'package:dd_study_22_ui/domain/models/comment/comment_model.dart';
+import 'package:dd_study_22_ui/domain/models/notification/send_notification_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_like.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
@@ -140,10 +141,21 @@ class PostDetailViewModel extends PostsWithInfo {
   }
 
   @override
-  void onLikeClick(String postId) {
+  void onLikeClick(String postId) async {
     var likeModel = PostLikeModel(userId: user!.id, postId: postId);
-    _api.likePost(likeModel);
-    refreshView();
+    await _api.likePost(likeModel);
+    await refreshView();
+
+    _sendPush(postId, "new like", "left a like on your post!");
+  }
+
+  _sendPush(String postId, String subtitle, String body) async {
+    var alertModel = Alert(
+        title: user!.name, subtitle: subtitle, body: "${user!.nameTag} $body");
+    var pushModel = Push(alert: alertModel);
+    var sendPushModel =
+        SendNotificationModel(userId: user!.id, push: pushModel);
+    await _api.sendPush("post", postId, sendPushModel);
   }
 
   @override
@@ -162,6 +174,8 @@ class PostDetailViewModel extends PostsWithInfo {
       FocusScope.of(context).unfocus();
       state.copyWith(commentContent: "");
       refreshView();
+
+      _sendPush(postId, "new comment", "left comment under your post");
     }
   }
 

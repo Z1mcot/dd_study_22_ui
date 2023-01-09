@@ -4,12 +4,15 @@ import 'package:dd_study_22_ui/domain/models/attachment/attach_meta.dart';
 import 'package:dd_study_22_ui/domain/models/comment/add_comment.dart';
 import 'package:dd_study_22_ui/domain/models/comment/comment_like.dart';
 import 'package:dd_study_22_ui/domain/models/comment/comment_model.dart';
+import 'package:dd_study_22_ui/domain/models/notification/notification_model.dart';
+import 'package:dd_study_22_ui/domain/models/notification/send_notification_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/create_post_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_like.dart';
 import 'package:dd_study_22_ui/domain/models/session/user_session.dart';
 import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
 import 'package:dd_study_22_ui/domain/models/subscription/subscribe_model.dart';
+import 'package:dd_study_22_ui/domain/models/token/push_token.dart';
 import 'package:dd_study_22_ui/domain/models/user/change_user_password_model.dart';
 import 'package:dd_study_22_ui/domain/models/user/modify_user_info_model.dart';
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
@@ -63,6 +66,9 @@ abstract class ApiClient {
   Future<List<PostModel>> getUserPosts(@Query("authorId") String userId,
       @Query("skip") int skip, @Query("take") int take);
 
+  @GET("/api/Post/ShowPost")
+  Future<PostModel> getPostById(@Query("postId") String postId);
+
   @POST("/api/Post/CreatePost")
   Future createPost(@Body() CreatePostModel model);
 
@@ -102,4 +108,20 @@ abstract class ApiClient {
 
   @POST("/api/User/DeactivateSession")
   Future deactivateSession(@Query("refreshToken") String refreshToken);
+
+  // Pushes
+  @POST("/api/Push/Subscribe")
+  Future subscribeToNotifications(@Body() PushToken model);
+
+  @POST("/api/Push/Unsubscribe")
+  Future unsubscribeFromNotifications();
+
+  @POST("/api/Push/SendPush")
+  Future sendPush(@Query("notifyType") String notifyType,
+      @Query("postId") String? postId, @Body() SendNotificationModel model);
+
+  // Notifications
+  @GET("/api/User/GetNotifications")
+  Future<List<NotificationModel>> getNotifications(
+      @Query("skip") int skip, @Query("take") int take);
 }

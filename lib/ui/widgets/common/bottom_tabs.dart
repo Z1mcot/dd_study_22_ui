@@ -1,5 +1,7 @@
+import 'package:badges/badges.dart';
 import 'package:dd_study_22_ui/domain/enums/tab_items.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
+import 'package:dd_study_22_ui/ui/widgets/tab_notifications/notifies_view_model.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_profile/profile/self_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +32,11 @@ class BottomTabs extends StatelessWidget {
           TabItemEnum.values.map((e) => _buildItem(e, appViewModel)).toList(),
       onTap: (value) {
         FocusScope.of(context).unfocus();
-        onSelectTab(TabItemEnum.values[value]);
+        var selectedTab = TabItemEnum.values[value];
+        onSelectTab(selectedTab);
+        // if (selectedTab == TabItemEnum.notifications) {
+        //   appViewModel.notificationCounter = 0;
+        // }
       },
     );
   }
@@ -50,6 +56,17 @@ class BottomTabs extends StatelessWidget {
         maxRadius: isCurrent ? 20 : 18,
         foregroundImage: appViewModel.avatar?.image,
       );
+    }
+
+    if (tabItem == TabItemEnum.notifications) {
+      var counter = appViewModel.notificationCounter ?? 0;
+
+      if (counter != 0) {
+        icon = Badge(
+          badgeContent: counter == 0 ? null : Text('$counter'),
+          child: const Icon(Icons.favorite_outline),
+        );
+      }
     }
 
     return BottomNavigationBarItem(

@@ -1,5 +1,6 @@
 import 'package:dd_study_22_ui/data/services/data_service.dart';
 import 'package:dd_study_22_ui/domain/models/comment/post_comment.dart';
+import 'package:dd_study_22_ui/domain/models/notification/notification_db.dart';
 import 'package:dd_study_22_ui/domain/models/post/post.dart';
 import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
 
@@ -57,5 +58,27 @@ class SyncService {
 
     await _dataService.rangeUpdateEntities(authors);
     await _dataService.rangeUpdateEntities(comments);
+  }
+
+  Future syncNotifications() async {
+    var notifyModels = await _api.getNotifications(skip: 0, take: 100);
+
+    var authors = notifyModels.map((e) => e.sender).toSet();
+    var posts = <Post>[];
+    for (var notify in notifyModels) {
+      if (notify.postId != null) {
+        var post = await _dataService.getPostById(notify.postId!);
+        posts.add(Post.fromJson(post!.toJson()));
+      }
+    }
+
+    var notifies = notifyModels.map(
+      (e) =>
+          NotificationDb.fromJson(e.toJson()).copyWith(senderId: e.sender.id),
+    );
+
+    await _dataService.rangeUpdateEntities(notifies);
+    await _dataService.rangeUpdateEntities(authors);
+    //await _dataService.rangeUpdateEntities(posts);
   }
 }
