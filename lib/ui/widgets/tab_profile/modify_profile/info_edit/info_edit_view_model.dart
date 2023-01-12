@@ -75,7 +75,11 @@ class InfoEditViewModel extends ChangeNotifier {
     if (user != null) model = model.copyWith(id: user!.id);
 
     try {
-      await _api.modifyUserInfo(model).then((value) {
+      await _api.modifyUserInfo(model);
+      await _api.getUser().then((value) {
+        SharedPrefs.setStoredUser(value);
+        notifyListeners();
+
         Navigator.of(context).pop();
       });
     } on NoNetworkException {

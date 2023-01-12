@@ -1,7 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:dd_study_22_ui/domain/enums/tab_items.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
-import 'package:dd_study_22_ui/ui/widgets/tab_notifications/notifies_view_model.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_profile/profile/self_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

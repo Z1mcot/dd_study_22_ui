@@ -39,8 +39,11 @@ class DataService {
     int skip = 0,
   }) async {
     var res = <PostModel>[];
-    var posts = await DB.instance
-        .getAll<Post>(whereMap: {"authorId": userId}, skip: skip, take: take);
+    var posts = await DB.instance.getAll<Post>(
+        whereMap: {"authorId": userId},
+        skip: skip,
+        take: take,
+        orderBy: "publishDate DESC");
     for (var post in posts) {
       var author = await DB.instance.get<SimpleUser>(post.authorId);
       var content =
@@ -99,7 +102,8 @@ class DataService {
         whereMap: {"authorId": userId},
         invertWhereClause: true,
         take: take,
-        skip: skip);
+        skip: skip,
+        orderBy: "publishDate DESC");
     for (var post in posts) {
       var author = await DB.instance.get<SimpleUser>(post.authorId);
       var content =

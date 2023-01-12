@@ -47,7 +47,7 @@ class AddPostViewModel extends ChangeNotifier {
       }
     }
 
-    showBottomBar();
+    //showBottomBar();
     await AppNavigator.toHome();
   }
 

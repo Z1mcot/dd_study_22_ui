@@ -13,7 +13,7 @@ import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
 import 'package:dd_study_22_ui/ui/navigation/tab_navigator.dart';
 import 'package:dd_study_22_ui/ui/widgets/posts/home_posts/posts_with_info.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_home/post_detail/post_detail_view_model_state.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class PostDetailViewModel extends PostsWithInfo {

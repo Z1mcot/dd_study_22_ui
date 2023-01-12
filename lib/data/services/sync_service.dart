@@ -3,6 +3,7 @@ import 'package:dd_study_22_ui/domain/models/comment/post_comment.dart';
 import 'package:dd_study_22_ui/domain/models/notification/notification_db.dart';
 import 'package:dd_study_22_ui/domain/models/post/post.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
+import 'package:dd_study_22_ui/domain/models/simple_user/simple_user.dart';
 import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
 
 class SyncService {
@@ -29,18 +30,20 @@ class SyncService {
   Future syncUserPosts(String userProfileId) async {
     var postModels = await _api.getUserPosts(userProfileId, 0, 100);
 
-    var authors = postModels.map((e) => e.author).toSet();
-    var postContent = postModels
-        .expand((x) => x.content.map((e) => e.copyWith(postId: x.id)))
-        .toList();
+    if (postModels.isNotEmpty) {
+      var author = <SimpleUser>[postModels.first.author];
+      var postContent = postModels
+          .expand((x) => x.content.map((e) => e.copyWith(postId: x.id)))
+          .toList();
 
-    var posts = postModels
-        .map((e) => Post.fromJson(e.toJson()).copyWith(authorId: e.author.id))
-        .toList();
+      var posts = postModels
+          .map((e) => Post.fromJson(e.toJson()).copyWith(authorId: e.author.id))
+          .toList();
 
-    await _dataService.rangeUpdateEntities(authors);
-    await _dataService.rangeUpdateEntities(posts);
-    await _dataService.rangeUpdateEntities(postContent);
+      await _dataService.rangeUpdateEntities(author);
+      await _dataService.rangeUpdateEntities(posts);
+      await _dataService.rangeUpdateEntities(postContent);
+    }
   }
 
   Future syncUserProfile(String userProfileId) async {

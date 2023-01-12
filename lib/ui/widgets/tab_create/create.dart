@@ -33,24 +33,24 @@ class CreateWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  height: 200,
-                  color: Colors.grey[300],
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(
-                        Icons.amp_stories_rounded,
-                        size: 28,
-                      ),
-                      Text("Add stories", style: TextStyle(fontSize: 16)),
-                      Text("В перспективе"),
-                    ],
-                  ),
-                ),
-              ),
+              // GestureDetector(
+              //   onTap: () {},
+              //   child: Container(
+              //     height: 200,
+              //     color: Colors.grey[300],
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: const [
+              //         Icon(
+              //           Icons.amp_stories_rounded,
+              //           size: 28,
+              //         ),
+              //         Text("Add stories", style: TextStyle(fontSize: 16)),
+              //         Text("В перспективе"),
+              //       ],
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

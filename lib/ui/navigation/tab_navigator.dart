@@ -2,7 +2,6 @@ import 'package:dd_study_22_ui/domain/enums/tab_items.dart';
 import 'package:dd_study_22_ui/domain/enums/user_list_type.dart';
 import 'package:dd_study_22_ui/domain/navigator_arguments.dart/tab_navigatior_arguments.dart';
 import 'package:dd_study_22_ui/ui/widgets/user_profile/subscribers/subscribers_list.dart';
-import 'package:dd_study_22_ui/ui/widgets/tab_create/new_post/new_post.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_home/post_detail/post_detail.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_profile/modify_profile/edit_profile.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_profile/modify_profile/info_edit/info_edit.dart';
@@ -18,9 +17,6 @@ class TabNavigatorRoutes {
   static const String userProfile = "/app/userProfile";
   static const String userSubscribers = "/app/userProfile/subscribers";
   static const String userSubscriptions = "/app/userProfile/subscriptions";
-
-  static const String createPost = "/app/createPost";
-  static const String createStories = "/app/createStories";
 
   static const String editProfile = "/app/editProfile";
   static const String editProfileInfo = "/app/edit/profile";
@@ -58,7 +54,6 @@ class TabNavigator extends StatelessWidget {
             ),
         // all about posts
         TabNavigatorRoutes.postDetails: (context) => PostDetail.create(args),
-        TabNavigatorRoutes.createPost: (context) => NewPost.create(),
         // all about editing user
         TabNavigatorRoutes.editProfile: (context) => EditProfileWidget.create(),
         TabNavigatorRoutes.editProfileInfo: (context) =>

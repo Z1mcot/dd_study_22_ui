@@ -52,12 +52,12 @@ class DB {
     return "t_${(type).toString()}";
   }
 
-  Future<Iterable<T>> getAll<T extends DbModel>({
-    Map<String, Object?>? whereMap,
-    bool? invertWhereClause,
-    int? take,
-    int? skip,
-  }) async {
+  Future<Iterable<T>> getAll<T extends DbModel>(
+      {Map<String, Object?>? whereMap,
+      bool? invertWhereClause,
+      int? take,
+      int? skip,
+      String? orderBy}) async {
     Iterable<Map<String, dynamic>> query;
 
     if (whereMap != null) {
@@ -83,9 +83,11 @@ class DB {
           where: whereBuilder.join(' and '),
           whereArgs: whereArgs,
           offset: skip,
-          limit: take);
+          limit: take,
+          orderBy: orderBy);
     } else {
-      query = await _db.query(_dbName(T), offset: skip, limit: take);
+      query = await _db.query(_dbName(T),
+          offset: skip, limit: take, orderBy: orderBy);
     }
 
     var resList = query.map((e) => _factories[T]!(e)).cast<T>();

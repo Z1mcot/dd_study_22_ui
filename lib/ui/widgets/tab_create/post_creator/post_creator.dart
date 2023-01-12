@@ -19,10 +19,12 @@ class PostCreator extends StatelessWidget {
         title: const Text("Create new post"),
         actions: [
           IconButton(
-              onPressed: () => viewModel.publishPost(files),
-              icon: Icon(
+              onPressed: () {
+                viewModel.publishPost(files);
+              },
+              icon: const Icon(
                 Icons.check,
-                color: Colors.lightBlue[300],
+                color: Colors.white,
               ))
         ],
       ),

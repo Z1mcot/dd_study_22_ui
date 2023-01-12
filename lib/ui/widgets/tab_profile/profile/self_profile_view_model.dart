@@ -38,9 +38,12 @@ class SelfProfileViewModel extends ProfileViewModel {
           Future.delayed(const Duration(seconds: 1)).then(
             (value) async {
               var postCount = posts!.length;
-              var newPosts =
+              var oldPosts =
                   await dataService.getUserPosts(user!.id, skip: postCount);
-              posts = <PostModel>[...posts!, ...newPosts];
+              posts = <PostModel>[
+                ...posts!,
+                ...oldPosts,
+              ];
               isLoading = false;
             },
           );
@@ -138,6 +141,8 @@ class SelfProfileViewModel extends ProfileViewModel {
 
   @override
   Future refreshView() async {
+    var refreshedUser = await api.getUser();
+    SharedPrefs.setStoredUser(refreshedUser);
     asyncInit();
     notifyListeners();
   }
@@ -145,6 +150,7 @@ class SelfProfileViewModel extends ProfileViewModel {
   @override
   void onProfileInfoButtonTap() {
     Navigator.of(context).pushNamed(TabNavigatorRoutes.editProfile);
+    refreshView();
   }
 
   @override

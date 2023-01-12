@@ -45,6 +45,8 @@ class EditProfileViewModel extends ChangeNotifier {
 
   Future toAvatarChange() async {
     var appViewModel = context.read<AppViewModel>();
+    // appViewModel.isBottomBarVisible = false;
+
     await Navigator.of(AppNavigator.key.currentState!.context)
         .push(MaterialPageRoute(
       builder: (newContext) => Scaffold(
@@ -74,6 +76,8 @@ class EditProfileViewModel extends ChangeNotifier {
         appViewModel.avatar = avatarImage;
       }
     }
+
+    // appViewModel.isBottomBarVisible = true;
   }
 
   Future toProfileEditing() async {
