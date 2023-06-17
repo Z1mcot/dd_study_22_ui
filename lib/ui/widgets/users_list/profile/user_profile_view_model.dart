@@ -133,6 +133,7 @@ class UserProfileViewModel extends ProfileViewModel {
         buttonMsg = "Follow";
         buttonBackgroundColor = Colors.grey[200];
         buttonTextColor = Colors.black;
+        _sendPush("unsubscribed", alertBody);
       } else {
         await api.subscribeToUser(model);
         alertBody = "unfollowed you";
@@ -144,6 +145,7 @@ class UserProfileViewModel extends ProfileViewModel {
         } else {
           buttonMsg = "Following";
         }
+        _sendPush("new follower", alertBody);
       }
 
       _sendPush("new follower", alertBody);

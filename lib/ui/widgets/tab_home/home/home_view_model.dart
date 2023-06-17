@@ -1,5 +1,6 @@
 import 'package:dd_study_22_ui/data/services/data_service.dart';
 import 'package:dd_study_22_ui/data/services/sync_service.dart';
+import 'package:dd_study_22_ui/domain/models/notification/send_notification_model.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_like.dart';
 import 'package:dd_study_22_ui/domain/models/post/post_model.dart';
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
@@ -92,6 +93,8 @@ class HomeViewModel extends PostsWithInfo {
 
     await SyncService().syncPosts();
     posts = await _dataService.getPosts(user!.id);
+
+    notifyListeners();
   }
 
   void onClick() {
@@ -117,8 +120,20 @@ class HomeViewModel extends PostsWithInfo {
     var likeModel = PostLikeModel(userId: user!.id, postId: postId);
     _api.likePost(likeModel);
     _asyncInit();
+    notifyListeners();
+    if (_posts!.firstWhere((element) => element.id == postId).isLiked == 0){
+      _sendPush(postId, "new like", "left a like on your post!");
+    }
   }
 
+  _sendPush(String postId, String subtitle, String body) async {
+    var alertModel = Alert(
+        title: user!.name, subtitle: subtitle, body: "${user!.nameTag} $body");
+    var pushModel = Push(alert: alertModel);
+    var sendPushModel =
+        SendNotificationModel(userId: user!.id, push: pushModel);
+    await _api.sendPush("post", postId, sendPushModel);
+  }
   @override
   void onCommentClick(String commentId) {
     // TODO: implement onCommentClick

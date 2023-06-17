@@ -52,6 +52,7 @@ class BottomTabs extends StatelessWidget {
 
     if (tabItem == TabItemEnum.profile) {
       icon = CircleAvatar(
+        key: const Key('profileTab'),
         maxRadius: isCurrent ? 20 : 18,
         foregroundImage: appViewModel.avatar?.image,
       );
@@ -62,7 +63,7 @@ class BottomTabs extends StatelessWidget {
 
       if (counter != 0) {
         icon = Badge(
-          badgeContent: counter == 0 ? null : Text('$counter'),
+          badgeContent: Text('$counter'),
           child: const Icon(Icons.favorite_outline),
         );
       }

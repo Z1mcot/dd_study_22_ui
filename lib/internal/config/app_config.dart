@@ -1,1 +1,1 @@
-String baseUrl = "http://10.0.2.2:5050";
+String baseUrl = "https://8c97-176-195-247-166.ngrok-free.app";

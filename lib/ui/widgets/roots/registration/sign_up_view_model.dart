@@ -12,6 +12,11 @@ class SignUpViewModel extends ChangeNotifier {
   var retrypasswTec = TextEditingController();
   var dateInputTec = TextEditingController();
 
+  final passRegExp =
+      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+  final emailRegExp = RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
   final _api = RepositoryModule.apiRepository();
 
   BuildContext context;
@@ -52,7 +57,10 @@ class SignUpViewModel extends ChangeNotifier {
     return (state.name?.isNotEmpty ?? false) &&
         (state.nameTag?.isNotEmpty ?? false) &&
         (state.email?.isNotEmpty ?? false) &&
+        (emailRegExp.hasMatch(state.email!)) &&
         (state.password?.isNotEmpty ?? false) &&
+        (state.password!.length > 7 && state.password!.length < 33) &&
+        (passRegExp.hasMatch(state.password!)) &&
         (state.retryPassword?.isNotEmpty ?? false) &&
         (state.password == state.retryPassword);
   }

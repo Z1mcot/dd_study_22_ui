@@ -19,28 +19,34 @@ class SignUpWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextField(
+                    key: const Key('nameField'),
                     controller: viewModel.nameTec,
                     decoration:
                         const InputDecoration(hintText: 'Enter your name')),
                 TextField(
+                    key: const Key('nametagField'),
                     controller: viewModel.nameTagTec,
                     decoration:
                         const InputDecoration(hintText: 'Enter your nametag')),
                 TextField(
+                    key: const Key('emailField'),
                     controller: viewModel.emailTec,
                     decoration:
                         const InputDecoration(hintText: 'Enter your email')),
                 TextField(
+                    key: const Key('passField'),
                     controller: viewModel.passwTec,
                     obscureText: true,
                     decoration:
                         const InputDecoration(hintText: 'Enter password')),
                 TextField(
+                    key: const Key('retryPassField'),
                     controller: viewModel.retrypasswTec,
                     obscureText: true,
                     decoration: const InputDecoration(
                         hintText: 'Enter your password again')),
                 TextField(
+                  key: const Key('birthdateField'),
                   controller: viewModel.dateInputTec,
                   decoration: const InputDecoration(
                       icon: Icon(Icons.calendar_today),
@@ -59,6 +65,7 @@ class SignUpWidget extends StatelessWidget {
                   },
                 ),
                 ElevatedButton(
+                    key: const Key('registerBtn'),
                     onPressed:
                         viewModel.checkFields() ? viewModel.register : null,
                     child: const Text("Register")),
@@ -66,7 +73,7 @@ class SignUpWidget extends StatelessWidget {
                   const CircularProgressIndicator(),
                 if (viewModel.state.errorText != null &&
                     viewModel.state.errorText!.isNotEmpty)
-                  Text(viewModel.state.errorText!),
+                  Text(key: const Key('errorTxt'), viewModel.state.errorText!),
               ],
             ),
           ),

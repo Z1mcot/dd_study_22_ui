@@ -17,10 +17,19 @@ class Auth extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 32.0),
+                  child: Text(
+                    'Welcome to Insta clone',
+                    style: TextStyle(fontSize: 24.0),
+                  ),
+                ),
                 TextField(
+                    key: const Key('loginField'),
                     controller: viewModel.loginTec,
                     decoration: const InputDecoration(hintText: 'Enter login')),
                 TextField(
+                    key: const Key('passwordField'),
                     controller: viewModel.passwTec,
                     obscureText: true,
                     decoration:
@@ -33,6 +42,7 @@ class Auth extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       ElevatedButton(
+                          key: const Key('loginBtn'),
                           style: ElevatedButton.styleFrom(
                               fixedSize: const Size.fromWidth(100)),
                           onPressed:
@@ -49,7 +59,10 @@ class Auth extends StatelessWidget {
                 if (viewModel.state.isLoading)
                   const CircularProgressIndicator(),
                 if (viewModel.state.errorText != null)
-                  Text(viewModel.state.errorText!),
+                  Text(
+                    viewModel.state.errorText!,
+                    key: const Key('errorTxt'),
+                  ),
               ],
             ),
           ),
