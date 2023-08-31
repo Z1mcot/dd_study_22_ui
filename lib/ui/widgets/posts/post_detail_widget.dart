@@ -62,7 +62,7 @@ class PostDetailWidget extends StatelessWidget {
             child: Center(
               child: TextField(
                 onTap: () {
-                  innerScrollController?.jumpTo(10);
+                  innerScrollController.jumpTo(10);
                 },
                 controller: postDetailViewModel.commentTec,
                 decoration: InputDecoration(

@@ -30,7 +30,7 @@ class AuthService {
             SharedPrefs.setStoredUser(user);
           }
         }
-      } on DioError catch (e) {
+      } on DioException catch (e) {
         if (e.error is SocketException) {
           throw NoNetworkException();
         } else if (<int>[401].contains(e.response?.statusCode)) {

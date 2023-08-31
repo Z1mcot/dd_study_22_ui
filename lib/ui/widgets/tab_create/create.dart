@@ -21,9 +21,9 @@ class CreateWidget extends StatelessWidget {
                 child: Container(
                   height: 200,
                   color: Colors.grey[300],
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(
                         Icons.post_add_rounded,
                         size: 28,

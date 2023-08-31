@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+// import 'package:badges/badges.dart';
 import 'package:dd_study_22_ui/domain/enums/tab_items.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
 import 'package:dd_study_22_ui/ui/widgets/tab_profile/profile/self_profile.dart';
@@ -62,7 +62,7 @@ class BottomTabs extends StatelessWidget {
 
       if (counter != 0) {
         icon = Badge(
-          badgeContent: counter == 0 ? null : Text('$counter'),
+          label: counter == 0 ? null : Text('$counter'),
           child: const Icon(Icons.favorite_outline),
         );
       }

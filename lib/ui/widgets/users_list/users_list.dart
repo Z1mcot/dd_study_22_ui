@@ -43,7 +43,7 @@ class UsersList extends StatelessWidget {
                   child: Row(children: [
                     CircleAvatar(
                       foregroundImage: NetworkImage(
-                          "$baseUrl${user.avatarLink}",
+                          "$AppConfig.baseUrl${user.avatarLink}",
                           headers: viewModel.headers),
                     ),
                     Column(

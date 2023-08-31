@@ -4,7 +4,7 @@ part 'refresh_token_request.g.dart';
 
 @JsonSerializable()
 class RefreshTokenRequest {
-  final String refreshToken;
+  final String? refreshToken;
   RefreshTokenRequest({
     required this.refreshToken,
   });

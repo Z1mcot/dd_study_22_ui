@@ -32,8 +32,8 @@ class CommentWidget extends StatelessWidget {
               child: GestureDetector(
                 onTap: () => viewModel.toUserProfile(comment.author.id),
                 child: CircleAvatar(
-                  foregroundImage:
-                      NetworkImage("$baseUrl${comment.author.avatarLink}"),
+                  foregroundImage: NetworkImage(
+                      "${AppConfig.baseUrl}${comment.author.avatarLink}"),
                   radius: 20,
                 ),
               ),

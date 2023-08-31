@@ -37,7 +37,7 @@ class Notifies extends StatelessWidget {
                                 viewModel.toUserProfile(notify.sender.id),
                             child: CircleAvatar(
                               foregroundImage: NetworkImage(
-                                  "$baseUrl${notify.sender.avatarLink}",
+                                  "$AppConfig.baseUrl${notify.sender.avatarLink}",
                                   headers: viewModel.headers),
                             ),
                           ),
@@ -76,7 +76,7 @@ class Notifies extends StatelessWidget {
                                     width: 60,
                                     height: 60,
                                     image: NetworkImage(
-                                        "$baseUrl${notify.post!.content[0].contentLink}"),
+                                        "$AppConfig.baseUrl${notify.post!.content[0].contentLink}"),
                                     fit: BoxFit.cover,
                                   ),
                                 )

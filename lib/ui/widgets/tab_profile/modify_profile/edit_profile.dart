@@ -24,9 +24,9 @@ class EditProfileWidget extends StatelessWidget {
                 child: Container(
                   color: Colors.grey[300],
                   height: 100,
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(
                         Icons.add_a_photo,
                         size: 28,
@@ -41,9 +41,9 @@ class EditProfileWidget extends StatelessWidget {
                 child: Container(
                   color: Colors.grey[300],
                   height: 100,
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(
                         Icons.edit,
                         size: 28,
@@ -58,9 +58,9 @@ class EditProfileWidget extends StatelessWidget {
                 child: Container(
                   color: Colors.grey[300],
                   height: 100,
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(
                         Icons.password,
                         size: 28,
