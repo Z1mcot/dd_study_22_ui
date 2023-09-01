@@ -49,7 +49,7 @@ class PostDetail extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               foregroundImage: NetworkImage(
-                                  "$baseUrl${post.author.avatarLink}"),
+                                  "$AppConfig.baseUrl${post.author.avatarLink}"),
                               radius: 20,
                             ),
                             const SizedBox(
@@ -72,7 +72,7 @@ class PostDetail extends StatelessWidget {
                           color: Colors.amber[300],
                           child: PostImage(
                             imageUrl:
-                                "$baseUrl${post.content[pageIndex].contentLink}",
+                                "$AppConfig.baseUrl${post.content[pageIndex].contentLink}",
                             headers: viewModel.headers,
                           ),
                         ),

@@ -16,57 +16,61 @@ class ApiModule {
       _authClient ??
       AuthClient(
         Dio(),
-        baseUrl: baseUrl,
+        baseUrl: AppConfig.baseUrl,
       );
   static ApiClient api() =>
       _apiClient ??
       ApiClient(
         _addIntercepters(Dio()),
-        baseUrl: baseUrl,
+        baseUrl: AppConfig.baseUrl,
       );
 
   static Dio _addIntercepters(Dio dio) {
-    dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        final token = await TokenStorage.getAccessToken();
-        options.headers.addAll({"Authorization": "Bearer $token"});
-        return handler.next(options);
-      },
-      onError: (e, handler) async {
-        if (e.response?.statusCode == 401) {
-          // ignore: deprecated_member_use
-          dio.lock();
-          RequestOptions options = e.response!.requestOptions;
-
-          var rt = await TokenStorage.getRefreshToken();
-          try {
-            if (rt != null) {
-              var token = await auth()
-                  .refreshToken(RefreshTokenRequest(refreshToken: rt));
-              await TokenStorage.setStoredToken(token);
-              options.headers["Authorization"] = "Bearer ${token!.accessToken}";
-            }
-          } catch (e) {
-            var service = AuthService();
-            //if (await service.checkAuth()) {
-            await service.cleanToken();
-            AppNavigator.toLoader();
-            //}
-
-            return handler
-                .resolve(Response(statusCode: 400, requestOptions: options));
-          } finally {
-            // ignore: deprecated_member_use
-            dio.unlock();
-          }
-
-          return handler.resolve(await dio.fetch(options));
-        } else {
-          return handler.next(e);
-        }
-      },
-    ));
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: _requestTokenInterceptor,
+        onError: _errorInterceptor,
+      ),
+    );
 
     return dio;
+  }
+
+  static void _requestTokenInterceptor(
+      RequestOptions options, RequestInterceptorHandler handler) async {
+    final token = await TokenStorage.getAccessToken();
+    options.headers.addAll({"Authorization": "Bearer $token"});
+    return handler.next(options);
+  }
+
+  static void _errorInterceptor(
+      DioException error, ErrorInterceptorHandler handler) async {
+    if (error.response?.statusCode == 401) {
+      RequestOptions options = error.response!.requestOptions;
+
+      var refreshToken = await TokenStorage.getRefreshToken();
+      final request = RefreshTokenRequest(refreshToken: refreshToken);
+      try {
+        var token = await auth().refreshToken(request);
+        await TokenStorage.setStoredToken(token);
+        options.headers["Authorization"] = "Bearer ${token!.accessToken}";
+      } catch (e) {
+        var service = AuthService();
+        if (await service.checkAuth()) {
+          await service.cleanToken();
+          AppNavigator.toLoader();
+        }
+
+        return handler.resolve(
+          Response(statusCode: 400, requestOptions: options),
+        );
+      }
+
+      Dio fetchDio = Dio();
+
+      return handler.resolve(await fetchDio.fetch(options));
+    } else {
+      return handler.next(error);
+    }
   }
 }

@@ -55,9 +55,9 @@ class AppViewModel extends ChangeNotifier {
   void _asyncInit() async {
     user = await SharedPrefs.getStoredUser();
     if (user!.avatarLink != null) {
-      var img =
-          await NetworkAssetBundle(Uri.parse("$baseUrl${user!.avatarLink}"))
-              .load("$baseUrl${user!.avatarLink}?v=1");
+      var img = await NetworkAssetBundle(
+              Uri.parse("${AppConfig.baseUrl}${user!.avatarLink}"))
+          .load("${AppConfig.baseUrl}${user!.avatarLink}?v=1");
       avatar = Image.memory(img.buffer.asUint8List(), fit: BoxFit.fill);
     }
     imagePaths = <String>[];

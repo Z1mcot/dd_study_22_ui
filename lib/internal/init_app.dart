@@ -4,7 +4,6 @@ import 'package:dd_study_22_ui/firebase_options.dart';
 import 'package:dd_study_22_ui/internal/utils.dart';
 import 'package:dd_study_22_ui/ui/navigation/app_navigator.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
-import 'package:dd_study_22_ui/ui/widgets/tab_notifications/notifies_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';

@@ -28,7 +28,8 @@ class ProfilePostTile extends StatelessWidget {
     return GestureDetector(
       onTap: () => profileViewModel.toPostDetail(post.id),
       child: Image(
-          image: NetworkImage("$baseUrl${post.content.first.contentLink}"),
+          image: NetworkImage(
+              "$AppConfig.baseUrl${post.content.first.contentLink}"),
           fit: BoxFit.cover),
     );
   }

@@ -94,9 +94,9 @@ class SelfProfileViewModel extends ProfileViewModel {
       if (t.isNotEmpty) {
         await api.addAvatarToUser(t.first);
 
-        var img =
-            await NetworkAssetBundle(Uri.parse("$baseUrl${user!.avatarLink}"))
-                .load("$baseUrl${user!.avatarLink}?v=1");
+        var img = await NetworkAssetBundle(
+                Uri.parse("$AppConfig.baseUrl${user!.avatarLink}"))
+            .load("$AppConfig.baseUrl${user!.avatarLink}?v=1");
         var avatarImage = Image.memory(img.buffer.asUint8List());
 
         appViewModel.avatar = avatarImage;

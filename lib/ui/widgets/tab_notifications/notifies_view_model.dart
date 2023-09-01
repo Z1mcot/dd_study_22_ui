@@ -5,7 +5,7 @@ import 'package:dd_study_22_ui/domain/models/notification/notification_model.dar
 import 'package:dd_study_22_ui/domain/models/user/user.dart';
 import 'package:dd_study_22_ui/domain/navigator_arguments.dart/tab_navigatior_arguments.dart';
 import 'package:dd_study_22_ui/internal/config/shared_prefs.dart';
-import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
+// import 'package:dd_study_22_ui/internal/dependencies/repository_module.dart';
 import 'package:dd_study_22_ui/ui/navigation/app_navigator.dart';
 import 'package:dd_study_22_ui/ui/navigation/tab_navigator.dart';
 import 'package:dd_study_22_ui/ui/widgets/roots/app/app_view_model.dart';
@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 class NotifiesViewModel extends ChangeNotifier {
   BuildContext context;
   final _dataService = DataService();
-  final _api = RepositoryModule.apiRepository();
+  // final _api = RepositoryModule.apiRepository();
 
   NotifiesViewModel({required this.context}) {
     _asyncInit();

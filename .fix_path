@@ -1,0 +1,1 @@
+export PATH="/Users/richardzubko/fvm/versions/3.13.2:${PATH}"

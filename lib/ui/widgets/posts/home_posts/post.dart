@@ -44,8 +44,8 @@ class ListViewPost extends StatelessWidget {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      foregroundImage:
-                          NetworkImage("$baseUrl${post.author.avatarLink}"),
+                      foregroundImage: NetworkImage(
+                          "${AppConfig.baseUrl}${post.author.avatarLink}"),
                       radius: 20,
                     ),
                     const SizedBox(
@@ -67,7 +67,8 @@ class ListViewPost extends StatelessWidget {
                 itemBuilder: (_, pageIndex) => Container(
                   color: Colors.amber[300],
                   child: PostImage(
-                    imageUrl: "$baseUrl${post.content[pageIndex].contentLink}",
+                    imageUrl:
+                        "${AppConfig.baseUrl}${post.content[pageIndex].contentLink}",
                     headers: homeViewModel.headers,
                   ),
                 ),

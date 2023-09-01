@@ -58,13 +58,13 @@ class UserProfileViewModel extends ProfileViewModel {
       user = await dataService.getUserById(userId!);
 
       avatar = Image.network(
-        "$baseUrl${user!.avatarLink}",
+        "$AppConfig.baseUrl${user!.avatarLink}",
         headers: headers,
       );
 
       await SyncService().syncUserPosts(user!.id);
       posts = await dataService.getUserPosts(user!.id);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (<int>[403].contains(e.response?.statusCode)) {
         errMsg = "This is private account";
       } else {

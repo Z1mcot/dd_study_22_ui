@@ -86,7 +86,7 @@ class HomeViewModel extends PostsWithInfo {
 
     user = await SharedPrefs.getStoredUser();
     avatar = Image.network(
-      "$baseUrl${user!.avatarLink}",
+      "${AppConfig.baseUrl}${user!.avatarLink}",
       fit: BoxFit.fill,
     );
 
